@@ -694,9 +694,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\todoweb\\todoweb.Core\\todoweb.Core.csproj",
-      "projectName": "todoweb.Core",
-      "projectPath": "D:\\Projects\\todoweb\\todoweb.Core\\todoweb.Core.csproj",
+      "projectUniqueName": "D:\\Projects\\todoweb\\todoweb.Core\\todoweb.Server.Models.csproj",
+      "projectName": "todoweb.Server.Models",
+      "projectPath": "D:\\Projects\\todoweb\\todoweb.Core\\todoweb.Server.Models.csproj",
       "packagesPath": "C:\\Users\\jez\\.nuget\\packages\\",
       "outputPath": "D:\\Projects\\todoweb\\todoweb.Core\\obj\\",
       "projectStyle": "PackageReference",
