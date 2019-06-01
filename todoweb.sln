@@ -5,19 +5,21 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server", "todoweb.Server\todoweb.Server.csproj", "{70301716-E4C5-4F95-AB18-88900C2B7E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Server.Models", "todoweb.Server.Models\todoweb.Server.Models.csproj", "{0C66412F-025C-4B34-A7CB-66779DE5A448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.Models", "todoweb.Server.Models\todoweb.Server.Models.csproj", "{0C66412F-025C-4B34-A7CB-66779DE5A448}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{267E8613-7E1F-4159-807D-8831072634DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client", "todoweb.Client\todoweb.Client.csproj", "{877F287A-3249-4ED1-8AB0-AB49BD320822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Client", "todoweb.Client\todoweb.Client.csproj", "{877F287A-3249-4ED1-8AB0-AB49BD320822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client.Contract", "todoweb.Client.Contract\todoweb.Client.Contract.csproj", "{AA6D98EB-4ADF-44E1-99D5-3249994AD3EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Client.Contract", "todoweb.Client.Contract\todoweb.Client.Contract.csproj", "{AA6D98EB-4ADF-44E1-99D5-3249994AD3EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client.Models", "todoweb.Client.Models\todoweb.Client.Models.csproj", "{C4265923-FB3A-4C80-A7E8-A6CC8012FC51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Client.Models", "todoweb.Client.Models\todoweb.Client.Models.csproj", "{C4265923-FB3A-4C80-A7E8-A6CC8012FC51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Server.Core", "todoweb.Server.Core\todoweb.Server.Core.csproj", "{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.Core", "todoweb.Server.Core\todoweb.Server.Core.csproj", "{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client.Generated", "todoweb.Client.Generated\todoweb.Client.Generated.csproj", "{14EEA79E-973E-469D-AC43-8B9D966B26D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14EEA79E-973E-469D-AC43-8B9D966B26D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14EEA79E-973E-469D-AC43-8B9D966B26D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14EEA79E-973E-469D-AC43-8B9D966B26D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14EEA79E-973E-469D-AC43-8B9D966B26D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{AA6D98EB-4ADF-44E1-99D5-3249994AD3EB} = {267E8613-7E1F-4159-807D-8831072634DC}
 		{C4265923-FB3A-4C80-A7E8-A6CC8012FC51} = {267E8613-7E1F-4159-807D-8831072634DC}
 		{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A} = {6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}
+		{14EEA79E-973E-469D-AC43-8B9D966B26D9} = {267E8613-7E1F-4159-807D-8831072634DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC87E2D6-7B7A-4A7E-8BB5-5A1C49F2C751}
