@@ -71,7 +71,7 @@
         "parameters": [
           {
             "type": "string",
-            "name": "id",
+            "name": "Id",
             "in": "path",
             "required": true,
             "format": "guid",
@@ -96,7 +96,7 @@
         "parameters": [
           {
             "type": "string",
-            "name": "id",
+            "name": "Id",
             "in": "path",
             "required": true,
             "format": "guid",
@@ -130,7 +130,7 @@
         "parameters": [
           {
             "type": "string",
-            "name": "id",
+            "name": "Id",
             "in": "path",
             "required": true,
             "format": "guid",
@@ -150,14 +150,14 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "id"
+        "Id"
       ],
       "properties": {
-        "id": {
+        "Id": {
           "type": "string",
           "format": "guid"
         },
-        "title": {
+        "Title": {
           "type": "string"
         }
       }

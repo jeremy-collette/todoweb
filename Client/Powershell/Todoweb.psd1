@@ -14,7 +14,7 @@
 # endregion 
 
 # region persistent data 
-  GUID = '64524f43-7684-4978-aea0-cbd65e9ddf7c'
+  GUID = '505e8756-d15d-4818-fe53-0824aa44af5e'
 # endregion 
 
 # region private data 
