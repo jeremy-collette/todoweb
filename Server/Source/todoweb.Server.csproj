@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\todoweb.Client.Models\todoweb.Client.Models.csproj" />
-    <ProjectReference Include="..\todoweb.Server.Core\todoweb.Server.Core.csproj" />
+    <ProjectReference Include="..\..\Client\Source\todoweb.Client.csproj" />
+    <ProjectReference Include="..\Core\todoweb.Server.Core.csproj" />
   </ItemGroup>
 
 </Project>

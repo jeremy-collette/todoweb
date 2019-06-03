@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-using CoreTodo = todoweb.Server.Models.Todo;
-using ClientTodo = todoweb.Client.Models.Todo;
-using todoweb.Server.Core;
-using AutoMapper;
-
-namespace todoweb
+﻿namespace todoweb
 {
+    using System;
+    using System.Collections.Generic;
+
+    using AutoMapper;
+    using Microsoft.AspNetCore.Mvc;
+
+    using todoweb.Server.Core;
+    using ClientTodo = todoweb.Client.Todo;
+    using CoreTodo = todoweb.Server.Models.Todo;
+
+
     [Route("", Name = "default")]
     public class TodoController : Controller
     {

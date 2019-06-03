@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-namespace todoweb.Client.Generated
+namespace todoweb.Client
 {
 #pragma warning disable
 
