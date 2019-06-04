@@ -46,7 +46,7 @@
       "output": null,
       "outputType": "Swagger2",
       "assemblyPaths": [
-        "Server/Source/bin/Debug/netcoreapp2.1/win-x64/publish/todoweb.Server.dll"
+        "Server/Source/bin/Debug/netcoreapp2.1/todoweb.Server.dll"
       ],
       "assemblyConfig": null,
       "referencePaths": [],
