@@ -52,11 +52,13 @@ namespace todoweb.Client
     public partial class TodoClient : ITodoClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public TodoClient(string baseUrl)
+        public TodoClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -91,7 +93,7 @@ namespace todoweb.Client
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -149,8 +151,6 @@ namespace todoweb.Client
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -167,7 +167,7 @@ namespace todoweb.Client
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -228,8 +228,6 @@ namespace todoweb.Client
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -250,7 +248,7 @@ namespace todoweb.Client
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -308,8 +306,6 @@ namespace todoweb.Client
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -330,7 +326,7 @@ namespace todoweb.Client
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -391,8 +387,6 @@ namespace todoweb.Client
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -413,7 +407,7 @@ namespace todoweb.Client
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -458,8 +452,6 @@ namespace todoweb.Client
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     

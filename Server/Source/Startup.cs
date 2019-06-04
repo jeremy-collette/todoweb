@@ -1,4 +1,4 @@
-﻿namespace todoweb.Web
+﻿namespace todoweb.Server
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;

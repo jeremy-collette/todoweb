@@ -12,15 +12,6 @@
 
         private readonly List<Todo> todos_ = new List<Todo>();
 
-        private TodoManager()
-        {
-            todos_.Add(new Todo
-            {
-                Id = Guid.NewGuid(),
-                Title = "Test TODO"
-            });
-        }
-
         public IEnumerable<Todo> GetAll()
         {
             return todos_;

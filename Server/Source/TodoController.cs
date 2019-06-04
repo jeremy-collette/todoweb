@@ -1,4 +1,4 @@
-﻿namespace todoweb
+﻿namespace todoweb.Server
 {
     using System;
     using System.Collections.Generic;
