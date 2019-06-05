@@ -2,6 +2,7 @@ namespace todoweb.Server.IntegrationTest
 {
     using System;
 
+    using FluentAssertions;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Xunit;
 
@@ -26,15 +27,14 @@ namespace todoweb.Server.IntegrationTest
             var client = new TodoClient(this.factory_.Server.BaseAddress.ToString(), httpClient);
 
             var todos = client.GetAllAsync().Result;
-            Assert.Empty(todos);
+            todos.Should().BeEmpty();
 
             var todo = new ClientTodo
             {
                 Title = "Foo"
             };
             var result = client.CreateAsync(todo).Result;
-            Assert.Equal(todo.Title, result.Title);
-            Assert.NotEqual(Guid.Empty, result.Id);
+            result.Should().BeEquivalentTo(todo);
         }
     }
 }

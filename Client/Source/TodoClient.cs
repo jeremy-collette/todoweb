@@ -494,37 +494,6 @@ namespace todoweb.Client
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Todo : System.ComponentModel.INotifyPropertyChanged
     {
-        private System.Guid _id;
-        private string _title;
-    
-        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("Title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Title
-        {
-            get { return _title; }
-            set 
-            {
-                if (_title != value)
-                {
-                    _title = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
     
         public string ToJson() 
         {

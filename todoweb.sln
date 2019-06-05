@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.Core", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.IntegrationTest", "Server\IntegrationTest\todoweb.Server.IntegrationTest.csproj", "{31C141A1-BFB8-435D-AC34-7951E8FF408B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client.Models", "Client\Models\todoweb.Client.Models\todoweb.Client.Models.csproj", "{E6748234-D087-4AAF-8E42-A604CEA60B8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{31C141A1-BFB8-435D-AC34-7951E8FF408B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31C141A1-BFB8-435D-AC34-7951E8FF408B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C141A1-BFB8-435D-AC34-7951E8FF408B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6748234-D087-4AAF-8E42-A604CEA60B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6748234-D087-4AAF-8E42-A604CEA60B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6748234-D087-4AAF-8E42-A604CEA60B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6748234-D087-4AAF-8E42-A604CEA60B8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{877F287A-3249-4ED1-8AB0-AB49BD320822} = {267E8613-7E1F-4159-807D-8831072634DC}
 		{E01C7191-F0C3-45B3-B5B3-1A7EC73C5E2A} = {6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}
 		{31C141A1-BFB8-435D-AC34-7951E8FF408B} = {6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}
+		{E6748234-D087-4AAF-8E42-A604CEA60B8F} = {267E8613-7E1F-4159-807D-8831072634DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC87E2D6-7B7A-4A7E-8BB5-5A1C49F2C751}
