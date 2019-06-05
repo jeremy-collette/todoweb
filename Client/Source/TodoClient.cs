@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+using todoweb.Client.Models;
+
 namespace todoweb.Client
 {
     #pragma warning disable
@@ -491,30 +493,7 @@ namespace todoweb.Client
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Todo : System.ComponentModel.INotifyPropertyChanged
-    {
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static Todo FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Todo>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.3.1.0 (NJsonSchema v9.14.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class SwaggerException : System.Exception

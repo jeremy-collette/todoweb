@@ -83,7 +83,9 @@
       "queryNullValue": "",
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromOperationId",
-      "additionalNamespaceUsages": [],
+      "additionalNamespaceUsages": [
+        "todoweb.Client.Models"
+      ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": false,
       "generateJsonMethods": true,
@@ -120,7 +122,7 @@
       "jsonSerializerSettingsTransformationMethod": null,
       "inlineNamedDictionaries": false,
       "inlineNamedTuples": true,
-      "generateDtoTypes": true,
+      "generateDtoTypes": false,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,

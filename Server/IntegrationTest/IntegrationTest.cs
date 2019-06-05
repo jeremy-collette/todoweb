@@ -1,6 +1,6 @@
 namespace todoweb.Server.IntegrationTest
 {
-    using System;
+    using System.Linq;
 
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,7 +8,7 @@ namespace todoweb.Server.IntegrationTest
 
     using todoweb.Client;
     using todoweb.Server;
-    using ClientTodo = todoweb.Client.Todo;
+    using ClientTodo = todoweb.Client.Models.Todo;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
@@ -21,20 +21,39 @@ namespace todoweb.Server.IntegrationTest
         }
 
         [Fact]
-        public void TodoLifecycle()
+        public async System.Threading.Tasks.Task TodoLifecycleAsync()
         {
+            // Create client / stand-up service
             var httpClient = this.factory_.CreateClient();
             var client = new TodoClient(this.factory_.Server.BaseAddress.ToString(), httpClient);
 
-            var todos = client.GetAllAsync().Result;
-            todos.Should().BeEmpty();
+            // Check no todos exist
+            (await client.GetAllAsync()).Should().BeEmpty();
 
+            // Create a todo
             var todo = new ClientTodo
             {
                 Title = "Foo"
             };
-            var result = client.CreateAsync(todo).Result;
-            result.Should().BeEquivalentTo(todo);
+            var result = await client.CreateAsync(todo);
+            result.Should().BeEquivalentTo(todo, o => o.Excluding(r => r.Id));
+
+            // Check it exists
+            (await client.GetAllAsync()).First().Should().BeEquivalentTo(todo, o => o.Excluding(r => r.Id));
+
+            // Update it
+            todo.Title = "Bar";
+            result = await client.CreateOrUpdateAsync(result.Id, todo);
+            result.Should().BeEquivalentTo(todo, o => o.Excluding(r => r.Id));
+
+            // Check it's updated
+            (await client.GetAsync(result.Id)).Should().BeEquivalentTo(todo, o => o.Excluding(r => r.Id));
+
+            // Delete it
+            await client.DeleteAsync(result.Id);
+
+            // Check it's gone
+            (await client.GetAllAsync()).Should().BeEmpty();
         }
     }
 }
