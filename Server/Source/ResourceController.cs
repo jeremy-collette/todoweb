@@ -34,6 +34,7 @@
         public TClientResource Create([FromBody] TClientResource resource)
         {
             var serverResource = mapper_.Map<TServerResource>(resource);
+            serverResource.Id = Guid.NewGuid();
             return mapper_.Map<TClientResource>(resourceManager_.Add(serverResource));
         }
 
