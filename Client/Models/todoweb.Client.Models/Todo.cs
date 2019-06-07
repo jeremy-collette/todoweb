@@ -1,8 +1,9 @@
 ﻿using System;
+using todoweb.Client.Models.Contract;
 
 namespace todoweb.Client.Models
 {
-    public class Todo
+    public class Todo : IClientResource
     {
         public Guid Id { get; }
 

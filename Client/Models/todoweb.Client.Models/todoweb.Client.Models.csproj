@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Server\Models\todoweb.Server.Models.csproj" />
+  </ItemGroup>
+
 </Project>
