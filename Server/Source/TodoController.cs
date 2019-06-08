@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using todoweb.Server.Core;
 
-    [Route("", Name = "default")]
+    [Route("/api/todo")]
     public class TodoController
         : ResourceController<Client.Models.Todo, Server.Models.Todo>
     {

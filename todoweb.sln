@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.Core", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.IntegrationTest", "Server\IntegrationTest\todoweb.Server.IntegrationTest.csproj", "{31C141A1-BFB8-435D-AC34-7951E8FF408B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoweb.Client.Models", "Client\Models\todoweb.Client.Models\todoweb.Client.Models.csproj", "{E6748234-D087-4AAF-8E42-A604CEA60B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Client.Models", "Client\Models\todoweb.Client.Models\todoweb.Client.Models.csproj", "{E6748234-D087-4AAF-8E42-A604CEA60B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
