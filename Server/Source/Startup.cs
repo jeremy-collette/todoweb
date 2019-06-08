@@ -5,6 +5,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using System;
+    using todoweb.Server.Core;
 
     public class Startup
     {
@@ -15,6 +16,9 @@
             services.AddMvc();
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            // Injection for controllers
+            services.AddSingleton<IResourceManager<Models.Todo>>(new ResourceManager<Models.Todo>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

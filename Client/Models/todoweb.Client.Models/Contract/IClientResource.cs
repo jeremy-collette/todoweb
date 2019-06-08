@@ -4,6 +4,6 @@
 
     public interface IClientResource
     {
-        Guid Id { get; }
+        Guid Id { get; set; }
     }
 }

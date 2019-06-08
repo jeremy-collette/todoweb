@@ -1,11 +1,12 @@
-﻿using System;
-using todoweb.Client.Models.Contract;
-
-namespace todoweb.Client.Models
+﻿namespace todoweb.Client.Models
 {
-    public class Todo : IClientResource
+    using System;
+    using todoweb.Client.Models.Contract;
+
+    public class Todo
+        : IClientResource
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
     }
