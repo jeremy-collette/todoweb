@@ -31,6 +31,7 @@
 
             app.UseSession();
             app.UseMvcWithDefaultRoute();
+            app.UseStaticFiles();
         }
     }
 }
