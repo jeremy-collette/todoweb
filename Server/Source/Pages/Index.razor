@@ -1,0 +1,30 @@
+﻿@page "/"
+@using todoweb.Server
+@inject TodoController todoController
+
+<h1>TODOs</h1>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>You currently have the following TODOs:</p>
+    <ul>
+        @foreach (var todo in todos)
+        {
+            <li>@todo.Title</li>
+        }
+    </ul>
+}
+
+@functions {
+    IEnumerable<Client.Models.Todo> todos;
+
+    protected override Task OnInitAsync()
+    {
+        todos = todoController.Get();
+        return Task.CompletedTask;
+    }
+}

@@ -26,8 +26,7 @@
         [HttpGet]
         public IActionResult Index()
         {
-            ViewData["Todos"] = this.modelMapper_.Map<IEnumerable<Client.Models.Todo>>(this.resourceManager_.GetAll());
-            return View();
+            return new OkObjectResult("Hello");
         }
     }
 }
