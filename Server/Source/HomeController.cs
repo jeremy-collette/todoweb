@@ -7,7 +7,7 @@
 
     using todoweb.Server.Core;
 
-    [Route("", Name = "default")]
+    [Route("/home")]
     public class HomeController : Controller
     {
         private IResourceManager<Server.Models.Todo> resourceManager_;

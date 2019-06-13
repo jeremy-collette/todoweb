@@ -9,6 +9,7 @@ namespace todoweb.Server.IntegrationTest
     using todoweb.Client;
     using todoweb.Server;
     using ClientTodo = todoweb.Client.Models.Todo;
+    using System.Threading.Tasks;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
@@ -21,7 +22,7 @@ namespace todoweb.Server.IntegrationTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task TodoLifecycleAsync()
+        public async Task TodoLifecycleAsync()
         {
             // Create client / stand-up service
             var httpClient = this.factory_.CreateClient();

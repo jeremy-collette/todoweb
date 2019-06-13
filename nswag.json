@@ -1,8 +1,8 @@
 ﻿{
   "runtime": "NetCore21",
   "defaultVariables": null,
-  "swaggerGenerator": {
-    "webApiToSwagger": {
+  "documentGenerator": {
+    "webApiToOpenApi": {
       "controllerNames": [
         "todoweb.Server.TodoController"
       ],
@@ -13,6 +13,7 @@
       "includedVersions": null,
       "defaultPropertyNameHandling": "Default",
       "defaultReferenceTypeNullHandling": "Null",
+      "defaultDictionaryValueReferenceTypeNullHandling": "NotNull",
       "defaultResponseReferenceTypeNullHandling": "Null",
       "defaultEnumHandling": "Integer",
       "flattenInheritanceHierarchy": false,
@@ -46,7 +47,7 @@
       "output": null,
       "outputType": "Swagger2",
       "assemblyPaths": [
-        "Server/Source/bin/Debug/netcoreapp2.1/todoweb.Server.dll"
+        "Server/Source/bin/Debug/netcoreapp3.0/todoweb.Server.dll"
       ],
       "assemblyConfig": null,
       "referencePaths": [],
@@ -54,7 +55,7 @@
     }
   },
   "codeGenerators": {
-    "swaggerToCSharpClient": {
+    "openApiToCSharpClient": {
       "clientBaseClass": null,
       "configurationClass": null,
       "generateClientClasses": true,
@@ -102,6 +103,7 @@
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
       "jsonConverters": null,
+      "anyType": "object",
       "dateTimeType": "System.DateTimeOffset",
       "timeType": "System.TimeSpan",
       "timeSpanType": "System.TimeSpan",
@@ -120,8 +122,10 @@
       "generateImmutableArrayProperties": false,
       "generateImmutableDictionaryProperties": false,
       "jsonSerializerSettingsTransformationMethod": null,
+      "inlineNamedArrays": false,
       "inlineNamedDictionaries": false,
       "inlineNamedTuples": true,
+      "inlineNamedAny": false,
       "generateDtoTypes": false,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
