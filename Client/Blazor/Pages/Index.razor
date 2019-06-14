@@ -1,0 +1,29 @@
+﻿@page "/"
+@using todoweb.Client.Models
+@inject HttpClient Http
+
+<h1>todoweb</h1>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>Your current TODOs are:</p>
+    <ul>
+    @foreach (var todo in todos)
+    {
+        <li>@todo.Title</li>
+    }
+    </ul>
+}
+
+@functions {
+    IEnumerable<Todo> todos;
+
+    protected override async Task OnInitAsync()
+    {
+        todos = await Http.GetJsonAsync<IEnumerable<Todo>>("api/todo");
+    }
+}

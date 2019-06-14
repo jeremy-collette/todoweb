@@ -7,17 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0-preview5.19227.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview5.19227.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0-preview5.19227.9" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0-preview5-19264-04" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Source\todoweb.Client.csproj" />
+    <ProjectReference Include="..\..\Client\Blazor\todoweb.Client.Blazor.csproj" />
     <ProjectReference Include="..\Core\todoweb.Server.Core.csproj" />
     <ProjectReference Include="..\Models\todoweb.Server.Models.csproj" />
   </ItemGroup>

@@ -1,15 +1,15 @@
 namespace todoweb.Server.IntegrationTest
 {
     using System.Linq;
+    using System.Threading.Tasks;
 
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Xunit;
 
-    using todoweb.Client;
     using todoweb.Server;
+    using todoweb.Client;
     using ClientTodo = todoweb.Client.Models.Todo;
-    using System.Threading.Tasks;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
