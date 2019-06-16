@@ -26,7 +26,7 @@ namespace todoweb.Server.IntegrationTest
         {
             // Create client / stand-up service
             var httpClient = this.factory_.CreateClient();
-            var client = new TodoClient(this.factory_.Server.BaseAddress.ToString(), httpClient);
+            var client = new TodoClient(httpClient);
 
             // Check no todos exist
             (await client.GetAllAsync()).Should().BeEmpty();

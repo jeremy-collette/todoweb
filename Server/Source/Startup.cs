@@ -28,12 +28,6 @@ namespace todoweb.Server
                 opts.MimeTypes = mimeTypes;
             });
             var todoManager = new ResourceManager<Todo>();
-            todoManager.Add(
-                new Todo
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Finish todoweb!"
-                });
             services.AddSingleton<IResourceManager<Todo>>(todoManager);
             services.AddSwaggerDocument();
         }
