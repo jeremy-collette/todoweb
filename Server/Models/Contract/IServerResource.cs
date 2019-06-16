@@ -5,5 +5,7 @@
     public interface IServerResource
     {
         Guid Id { get; set; }
+
+        Guid UserId { get; set; }
     }
 }

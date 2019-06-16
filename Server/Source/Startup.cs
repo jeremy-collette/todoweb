@@ -7,7 +7,7 @@ namespace todoweb.Server
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
+    using todoweb.Server.Contract;
     using todoweb.Server.Core;
     using todoweb.Server.Models;
 
@@ -17,7 +17,8 @@ namespace todoweb.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddNewtonsoftJson();
+            services.AddSession();
+            services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson();
             services.AddResponseCompression(opts =>
             {
                 var mimeTypes = new List<string> { "application/octet-stream" };
@@ -25,7 +26,10 @@ namespace todoweb.Server
                 opts.MimeTypes = mimeTypes;
             });
             services.AddSingleton<IResourceManager<Todo>>(new ResourceManager<Todo>());
-            services.AddSingleton<IResourceManager<User>>(new ResourceManager<User>());
+            var userManager = new ResourceManager<User>();
+            services.AddSingleton<IResourceManager<User>>(userManager);
+            var sessionManager = new SessionManager(userManager);
+            services.AddSingleton<IHttpSessionManager>(new HttpSessionManager(sessionManager));
             services.AddSwaggerDocument();
         }
 
@@ -50,6 +54,9 @@ namespace todoweb.Server
             app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUi3();
+
+            app.UseSession();
+            app.UseMvc();
         }
     }
 }

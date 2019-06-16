@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +18,13 @@
         where TServerResource : IServerResource
     {
         private IResourceManager<TServerResource> resourceManager_;
+        private IHttpSessionManager httpSessionManager_;
         private IMapper modelMapper_;
 
-        public ResourceController(IResourceManager<TServerResource> resourceManager)
+        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager)
         {
             this.resourceManager_ = resourceManager;
+            this.httpSessionManager_ = httpSessionManager;
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TClientResource, TServerResource>();
@@ -35,8 +37,17 @@
         [HttpPost]
         public TClientResource Create([FromBody] TClientResource resource)
         {
+            // Make sure we're not already logged in
+            var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (user != null)
+            {
+                return default;
+            }
+
+            // Create new resource for user
             var serverResource = modelMapper_.Map<TServerResource>(resource);
             serverResource.Id = Guid.NewGuid();
+            serverResource.UserId = user.Id;
             return modelMapper_.Map<TClientResource>(resourceManager_.Add(serverResource));
         }
 
@@ -44,6 +55,21 @@
         [HttpPut("{id}")]
         public TClientResource CreateOrUpdate(Guid id, [FromBody] TClientResource resource)
         {
+            // Get user from session
+            var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (user == null)
+            {
+                return default;
+            }
+
+            // Check if resource exists and if this user owns it
+            var foundResource = resourceManager_.Get(id);
+            if (foundResource?.UserId != user.UserId)
+            {
+                return default;
+            }
+
+            // Update existing resource / create new
             var serverResource = modelMapper_.Map<TServerResource>(resource);
             serverResource.Id = id;
             return modelMapper_.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource));
@@ -53,6 +79,20 @@
         [HttpDelete("{id}")]
         public bool Delete(Guid id)
         {
+            // Get user from session
+            var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (user == null)
+            {
+                return false;
+            }
+
+            // Check if resource exists and if this user owns it
+            var foundResource = resourceManager_.Get(id);
+            if (foundResource?.UserId != user.UserId)
+            {
+                return default;
+            }
+
             return resourceManager_.Delete(id);
         }
 
@@ -60,15 +100,30 @@
         [HttpGet]
         public IEnumerable<TClientResource> Get()
         {
-            return modelMapper_.Map<IEnumerable<TClientResource>>(resourceManager_.GetAll());
+            // Get user from session
+            var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (user == null)
+            {
+                return default;
+            }
+
+            var userResources = resourceManager_.GetAll().Where(r => r.UserId == user.Id);
+            return modelMapper_.Map<IEnumerable<TClientResource>>(userResources);
         }
 
         // GET resource/5
         [HttpGet("{id}")]
         public TClientResource Get(Guid id)
         {
+            // Get user from session
+            var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (user == null)
+            {
+                return default;
+            }
+
             var resource = resourceManager_.Get(id);
-            if (resource == null)
+            if (resource?.UserId != user.Id)
             {
                 return default;
             }
