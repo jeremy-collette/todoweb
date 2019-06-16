@@ -1,6 +1,5 @@
 namespace todoweb.Server
 {
-    using System;
     using System.Collections.Generic;
 
     using Microsoft.AspNetCore.Builder;
@@ -8,8 +7,6 @@ namespace todoweb.Server
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using NJsonSchema;
-    using NSwag.AspNetCore;
 
     using todoweb.Server.Core;
     using todoweb.Server.Models;
@@ -27,8 +24,8 @@ namespace todoweb.Server
                 mimeTypes.AddRange(ResponseCompressionDefaults.MimeTypes);
                 opts.MimeTypes = mimeTypes;
             });
-            var todoManager = new ResourceManager<Todo>();
-            services.AddSingleton<IResourceManager<Todo>>(todoManager);
+            services.AddSingleton<IResourceManager<Todo>>(new ResourceManager<Todo>());
+            services.AddSingleton<IResourceManager<User>>(new ResourceManager<User>());
             services.AddSwaggerDocument();
         }
 
