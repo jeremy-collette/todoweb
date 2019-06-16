@@ -6,6 +6,7 @@
 
 @if (todos == null)
 {
+    <p>HELLO</p>
     <p><em>Loading...</em></p>
 }
 else
@@ -24,6 +25,6 @@ else
 
     protected override async Task OnInitAsync()
     {
-        todos = await Http.GetJsonAsync<IEnumerable<Todo>>("api/todo");
+        todos = await Http.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
     }
 }

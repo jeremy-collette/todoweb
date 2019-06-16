@@ -1,12 +1,16 @@
 namespace todoweb.Server
 {
+    using System;
+    using System.Collections.Generic;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using System;
-    using System.Collections.Generic;
+    using NJsonSchema;
+    using NSwag.AspNetCore;
+
     using todoweb.Server.Core;
     using todoweb.Server.Models;
 
@@ -31,6 +35,7 @@ namespace todoweb.Server
                     Title = "Finish todoweb!"
                 });
             services.AddSingleton<IResourceManager<Todo>>(todoManager);
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,15 +48,17 @@ namespace todoweb.Server
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
             }
-
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
             });
+            app.Map("/bzr", child => { child.UseBlazor<Client.Blazor.Program>(); });
 
-            app.UseBlazor<todoweb.Client.Blazor.Startup>();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUi3();
         }
     }
 }

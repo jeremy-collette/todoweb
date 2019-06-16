@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WebApplication2.Client": {
+    "todoweb.Client.Blazor": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
