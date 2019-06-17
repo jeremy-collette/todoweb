@@ -19,7 +19,7 @@
     {
         private IResourceManager<TServerResource> resourceManager_;
         private IHttpSessionManager httpSessionManager_;
-        private IMapper modelMapper_;
+        protected IMapper ModelMapper { get; set; }
 
         public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager)
         {
@@ -30,67 +30,68 @@
                 cfg.CreateMap<TClientResource, TServerResource>();
                 cfg.CreateMap<TServerResource, TClientResource>();
             });
-            modelMapper_ = config.CreateMapper();
+
+            this.ModelMapper = config.CreateMapper();
         }
 
         // POST resource/
         [HttpPost]
-        public TClientResource Create([FromBody] TClientResource resource)
+        public ActionResult<TClientResource> Create([FromBody] TClientResource resource)
         {
             // Make sure we're not already logged in
-            var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            if (user != null)
-            {
-                return default;
-            }
+            //var user = this.httpSessionManager_.GetUserFromRequest(Request);
+            //if (user != null)
+            //{
+            //    return NotFound();
+            //}
 
             // Create new resource for user
-            var serverResource = modelMapper_.Map<TServerResource>(resource);
+            var serverResource = this.ModelMapper.Map<TServerResource>(resource);
             serverResource.Id = Guid.NewGuid();
-            serverResource.UserId = user.Id;
-            return modelMapper_.Map<TClientResource>(resourceManager_.Add(serverResource));
+            //serverResource.UserId = user.Id;
+            return this.ModelMapper.Map<TClientResource>(resourceManager_.Add(serverResource));
         }
 
         // PUT resource/5
         [HttpPut("{id}")]
-        public TClientResource CreateOrUpdate(Guid id, [FromBody] TClientResource resource)
+        public ActionResult<TClientResource> CreateOrUpdate(Guid id, [FromBody] TClientResource resource)
         {
             // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             if (user == null)
             {
-                return default;
+                return NotFound();
             }
 
             // Check if resource exists and if this user owns it
             var foundResource = resourceManager_.Get(id);
             if (foundResource?.UserId != user.UserId)
             {
-                return default;
+                return NotFound();
             }
 
             // Update existing resource / create new
-            var serverResource = modelMapper_.Map<TServerResource>(resource);
+            var serverResource = this.ModelMapper.Map<TServerResource>(resource);
             serverResource.Id = id;
-            return modelMapper_.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource));
+            return this.ModelMapper.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource));
         }
 
         // DELETE resource/5
         [HttpDelete("{id}")]
-        public bool Delete(Guid id)
+        public ActionResult<bool> Delete(Guid id)
         {
             // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             if (user == null)
             {
-                return false;
+                return NotFound();
             }
 
             // Check if resource exists and if this user owns it
             var foundResource = resourceManager_.Get(id);
             if (foundResource?.UserId != user.UserId)
             {
-                return default;
+                return NotFound();
             }
 
             return resourceManager_.Delete(id);
@@ -98,36 +99,36 @@
 
         // GET resource/
         [HttpGet]
-        public IEnumerable<TClientResource> Get()
+        public ActionResult<IEnumerable<TClientResource>> Get()
         {
             // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             if (user == null)
             {
-                return default;
+                return NotFound();
             }
 
             var userResources = resourceManager_.GetAll().Where(r => r.UserId == user.Id);
-            return modelMapper_.Map<IEnumerable<TClientResource>>(userResources);
+            return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(userResources));
         }
 
         // GET resource/5
         [HttpGet("{id}")]
-        public TClientResource Get(Guid id)
+        public ActionResult<TClientResource> Get(Guid id)
         {
             // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             if (user == null)
             {
-                return default;
+                return NotFound();
             }
 
             var resource = resourceManager_.Get(id);
-            if (resource?.UserId != user.Id)
-            {
-                return default;
-            }
-            return modelMapper_.Map<TClientResource>(resource);
+            //if (resource?.UserId != user.Id)
+            //{
+            //    return NotFound();
+            //}
+            return this.ModelMapper.Map<TClientResource>(resource);
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿@page "/login"
+@using todoweb.Client.Models
+@inject HttpClient httpClient
+
+<h1>todoweb</h1>
+
+@if (loggedInUser == null)
+{
+    <p><em>Logging in...</em></p>
+}
+else
+{
+   <p>Hello, test @loggedInUser.Email!</p>
+}
+
+@functions {
+    User loggedInUser = null;
+
+    protected override async Task OnInitAsync()
+    {
+        var user = new User
+        {
+            Email = "foo@bar.com",
+            Password = "test1234"
+        };
+        var createdUser = await httpClient.PostJsonAsync<User>("../api/user", user);
+        user.Id = createdUser.Id;
+        loggedInUser = await httpClient.PostJsonAsync<User>("../api/user/login", user);
+    }
+}

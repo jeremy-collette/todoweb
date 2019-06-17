@@ -8,14 +8,14 @@
 
     public interface IResourceController<TClientResource> where TClientResource : IClientResource
     {
-        IEnumerable<TClientResource> Get();
+        ActionResult<IEnumerable<TClientResource>> Get();
 
-        TClientResource Get(Guid id);
+        ActionResult<TClientResource> Get(Guid id);
 
-        TClientResource Create([FromBody]TClientResource resource);
+        ActionResult<TClientResource> Create([FromBody]TClientResource resource);
 
-        TClientResource CreateOrUpdate(Guid id, [FromBody]TClientResource resource);
+        ActionResult<TClientResource> CreateOrUpdate(Guid id, [FromBody]TClientResource resource);
 
-        bool Delete(Guid id);
+        ActionResult<bool> Delete(Guid id);
     }
 }

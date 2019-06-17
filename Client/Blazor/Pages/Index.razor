@@ -1,30 +1,45 @@
 ﻿@page "/"
 @using todoweb.Client.Models
-@inject HttpClient Http
+@inject HttpClient httpClient
 
 <h1>todoweb</h1>
 
-@if (todos == null)
+@if (fetched == false)
 {
-    <p>HELLO</p>
     <p><em>Loading...</em></p>
 }
 else
 {
-    <p>Your current TODOs are:</p>
-    <ul>
-    @foreach (var todo in todos)
+    if (todos == null)
     {
-        <li>@todo.Title</li>
+        <p>Please login.</p>
     }
-    </ul>
+    else
+    {
+        <p>Your current TODOs are:</p>
+        <ul>
+        @foreach (var todo in todos)
+        {
+            <li>@todo.Title</li>
+        }
+        </ul>
+    }
 }
 
 @functions {
+    bool fetched = false;
     IEnumerable<Todo> todos;
 
     protected override async Task OnInitAsync()
     {
-        todos = await Http.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
+        try
+        {
+            todos = await httpClient.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
+        }
+        catch (HttpRequestException ex)
+        {
+
+        }
+        fetched = true;
     }
 }

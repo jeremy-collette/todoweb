@@ -36,6 +36,9 @@ namespace todoweb.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
+            app.UseMvc();
+
             app.UseResponseCompression();
 
             if (env.IsDevelopment())
@@ -43,6 +46,7 @@ namespace todoweb.Server
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
             }
+
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -54,9 +58,6 @@ namespace todoweb.Server
             app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUi3();
-
-            app.UseSession();
-            app.UseMvc();
         }
     }
 }
