@@ -18,28 +18,50 @@ else
     {
         <p>Your current TODOs are:</p>
         <ul>
-        @foreach (var todo in todos)
-        {
-            <li>@todo.Title</li>
-        }
+            @foreach (var todo in todos)
+            {
+                <li>@todo.Title</li>
+            }
         </ul>
+
+        <b>Create new TODO:</b>
+        <EditForm Model="@newTodo" OnValidSubmit="@HandleNewTodo">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <InputText id="title" bind-Value="@newTodo.Title" />
+            <button type="submit">Submit</button>
+        </EditForm>
     }
 }
 
 @functions {
-    bool fetched = false;
-    IEnumerable<Todo> todos;
 
-    protected override async Task OnInitAsync()
+    private async Task<IEnumerable<Todo>> GetTodos()
     {
         try
         {
-            todos = await httpClient.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
+            return await httpClient.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
         }
-        catch (HttpRequestException ex)
+        catch
         {
-
+            return null;
         }
+    }
+
+    ICollection<Todo> todos;
+    bool fetched = false;
+    protected override async Task OnInitAsync()
+    {
+        todos = (await GetTodos())?.ToList();
         fetched = true;
+    }
+
+    Todo newTodo = new Todo();
+    private async void HandleNewTodo()
+    {
+        await httpClient.PostJsonAsync<Todo>("../api/todo", newTodo);
+        todos?.Add(newTodo);
+        newTodo = new Todo();
+        this.StateHasChanged();
     }
 }

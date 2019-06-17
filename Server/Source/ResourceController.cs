@@ -38,17 +38,22 @@
         [HttpPost]
         public ActionResult<TClientResource> Create([FromBody] TClientResource resource)
         {
-            // Make sure we're not already logged in
-            //var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            //if (user != null)
-            //{
-            //    return NotFound();
-            //}
+            // Make sure we're logged in
+            // TODO (@jez): Fix this terrible hack
+            User user = null;
+            if (typeof(TClientResource) != typeof(Client.Models.User))
+            {
+                user = this.httpSessionManager_.GetUserFromRequest(Request);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+            }
 
             // Create new resource for user
             var serverResource = this.ModelMapper.Map<TServerResource>(resource);
             serverResource.Id = Guid.NewGuid();
-            //serverResource.UserId = user.Id;
+            serverResource.UserId = user?.Id ?? serverResource.Id;
             return this.ModelMapper.Map<TClientResource>(resourceManager_.Add(serverResource));
         }
 
@@ -124,10 +129,10 @@
             }
 
             var resource = resourceManager_.Get(id);
-            //if (resource?.UserId != user.Id)
-            //{
-            //    return NotFound();
-            //}
+            if (resource?.UserId != user.Id)
+            {
+                return NotFound();
+            }
             return this.ModelMapper.Map<TClientResource>(resource);
         }
     }
