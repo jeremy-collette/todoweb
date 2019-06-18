@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +20,16 @@
     {
         private IResourceManager<TServerResource> resourceManager_;
         private IHttpSessionManager httpSessionManager_;
+        private IAuthorizationPolicy<TServerResource> authorizationPolicy_;
+
         protected IMapper ModelMapper { get; set; }
 
-        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager)
+        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy)
         {
             this.resourceManager_ = resourceManager;
             this.httpSessionManager_ = httpSessionManager;
+            this.authorizationPolicy_ = authorizationPolicy;
+
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TClientResource, TServerResource>();
@@ -38,102 +43,90 @@
         [HttpPost]
         public ActionResult<TClientResource> Create([FromBody] TClientResource resource)
         {
-            // Make sure we're logged in
-            // TODO (@jez): Fix this terrible hack
-            User user = null;
-            if (typeof(TClientResource) != typeof(Client.Models.User))
-            {
-                user = this.httpSessionManager_.GetUserFromRequest(Request);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-            }
-
-            // Create new resource for user
-            var serverResource = this.ModelMapper.Map<TServerResource>(resource);
-            serverResource.Id = Guid.NewGuid();
-            serverResource.UserId = user?.Id ?? serverResource.Id;
-            return this.ModelMapper.Map<TClientResource>(resourceManager_.Add(serverResource));
+            return this.CreateOrUpdate(Guid.NewGuid(), resource);
         }
 
         // PUT resource/5
         [HttpPut("{id}")]
         public ActionResult<TClientResource> CreateOrUpdate(Guid id, [FromBody] TClientResource resource)
         {
-            // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            if (user == null)
+            var serverResource = this.resourceManager_.Get(id);
+
+            if (serverResource != null)
             {
-                return NotFound();
+                // Update path
+                if (!this.authorizationPolicy_.CanWrite(user, serverResource))
+                {
+                    return Unauthorized();
+                }
+
+                this.ModelMapper.Map(resource, serverResource);
+            }
+            else
+            {
+                // Create path
+                if (!this.authorizationPolicy_.CanCreate(user))
+                {
+                    return Unauthorized();
+                }
+
+                serverResource = this.ModelMapper.Map<TServerResource>(resource);
+                serverResource.Id = id;
             }
 
-            // Check if resource exists and if this user owns it
-            var foundResource = resourceManager_.Get(id);
-            if (foundResource?.UserId != user.UserId)
-            {
-                return NotFound();
-            }
-
-            // Update existing resource / create new
-            var serverResource = this.ModelMapper.Map<TServerResource>(resource);
-            serverResource.Id = id;
-            return this.ModelMapper.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource));
+            return Ok(this.ModelMapper.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource)));
         }
 
         // DELETE resource/5
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(Guid id)
         {
-            // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            if (user == null)
+            var serverResource = resourceManager_.Get(id);
+
+            if (!this.authorizationPolicy_.CanDelete(user, serverResource))
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            // Check if resource exists and if this user owns it
-            var foundResource = resourceManager_.Get(id);
-            if (foundResource?.UserId != user.UserId)
-            {
-                return NotFound();
-            }
-
-            return resourceManager_.Delete(id);
+            return Ok(resourceManager_.Delete(id));
         }
 
         // GET resource/
         [HttpGet]
         public ActionResult<IEnumerable<TClientResource>> Get()
         {
-            // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            if (user == null)
+
+            var resources = resourceManager_.GetAll().ToList();
+            if (resources.Count == 0)
             {
-                return NotFound();
+                return Ok(new List<TClientResource>());
             }
 
-            var userResources = resourceManager_.GetAll().Where(r => r.UserId == user.Id);
-            return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(userResources));
+            var authorizedResources = resources.Where(resource => this.authorizationPolicy_.CanRead(user, resource)).ToList();
+            if (authorizedResources.Count == 0)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(resources));
         }
 
         // GET resource/5
         [HttpGet("{id}")]
         public ActionResult<TClientResource> Get(Guid id)
         {
-            // Get user from session
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
-            if (user == null)
+
+            var serverResource = resourceManager_.Get(id);
+            if (!this.authorizationPolicy_.CanRead(user, serverResource))
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            var resource = resourceManager_.Get(id);
-            if (resource?.UserId != user.Id)
-            {
-                return NotFound();
-            }
-            return this.ModelMapper.Map<TClientResource>(resource);
+            return Ok(this.ModelMapper.Map<TClientResource>(serverResource));
         }
     }
 }

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Core\todoweb.Server.Core.csproj" />
     <ProjectReference Include="..\Models\todoweb.Server.Models.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

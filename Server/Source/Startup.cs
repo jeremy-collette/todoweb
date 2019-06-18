@@ -30,6 +30,8 @@ namespace todoweb.Server
             services.AddSingleton<IResourceManager<User>>(userManager);
             var sessionManager = new SessionManager(userManager);
             services.AddSingleton<IHttpSessionManager>(new HttpSessionManager(sessionManager));
+            services.AddSingleton<IAuthorizationPolicy<User>>(new UserAuthorizationPolicy());
+            services.AddSingleton<IAuthorizationPolicy<Todo>>(new TodoAuthorizationPolicy());
             services.AddSwaggerDocument();
         }
 

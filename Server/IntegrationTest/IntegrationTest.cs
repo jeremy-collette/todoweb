@@ -12,6 +12,8 @@ namespace todoweb.Server.IntegrationTest
     using todoweb.Client.Models.Contract;
     using todoweb.Server;
     using Client = todoweb.Client.Models;
+    using todoweb.Client.Models;
+    using FluentAssertions;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
@@ -69,12 +71,21 @@ namespace todoweb.Server.IntegrationTest
         }
 
         [Fact]
-        public void TodoLifecycle()
+        public async void TodoLifecycle()
         {
             var httpClient = this.factory_.CreateClient();
-            var client = new ResourceClient<Client.Todo>(typeof(TodoClient), httpClient);
 
-            ResourceLifecycleIntegrationTest.TestResource(
+            var userClient = new UserClient(httpClient);
+            var user = new User
+            {
+                Email = "foo@bar.com",
+                Password = "test1234"
+            };
+            var createdUser = await userClient.CreateAsync(user);
+            await userClient.LoginAsync(user);
+
+            var client = new ResourceClient<Client.Todo>(typeof(TodoClient), httpClient);
+            await ResourceLifecycleIntegrationTest.TestResource(
                 client,
                 createFactory: () => new Client.Todo
                 {
@@ -86,15 +97,18 @@ namespace todoweb.Server.IntegrationTest
                     return todo;
                 },
                 options: (o) => o.Excluding(t => t.Id));
+
+            await userClient.DeleteAsync(createdUser.Id);
+            await userClient.LogoutAsync();
         }
 
         [Fact]
-        public void UserLifecycle()
+        public async void UserLifecycle()
         {
             var httpClient = this.factory_.CreateClient();
             var client = new ResourceClient<Client.User>(typeof(UserClient), httpClient);
 
-            ResourceLifecycleIntegrationTest.TestResource(
+            await ResourceLifecycleIntegrationTest.TestResource(
                 client,
                 createFactory: () => new Client.User
                 {

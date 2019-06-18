@@ -1,5 +1,6 @@
 ﻿namespace todoweb.Server
 {
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using System.Security.Cryptography;
@@ -17,8 +18,8 @@
         private IResourceManager<Server.User> userManager_;
         private IHttpSessionManager httpSessionManager_;
 
-        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager)
-            : base(userManager, httpSessionManager)
+        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
+            : base(userManager, httpSessionManager, authorizationPolicy)
         {
             this.userManager_ = userManager;
             this.httpSessionManager_ = httpSessionManager;
@@ -28,7 +29,8 @@
         [HttpPost]
         public ActionResult<Client.User> Login([FromBody] Client.User user)
         {
-            var serverUser = userManager_.GetAll().FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+            var serverUser = userManager_.GetAll()
+                .FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
             if (serverUser == null)
             {
                 return NotFound();

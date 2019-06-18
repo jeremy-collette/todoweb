@@ -6,6 +6,6 @@
     {
         Guid Id { get; set; }
 
-        Guid UserId { get; set; }
+        Guid Owner { get; set; }
     }
 }
