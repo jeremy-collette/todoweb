@@ -73,6 +73,7 @@
 
                 serverResource = this.ModelMapper.Map<TServerResource>(resource);
                 serverResource.Id = id;
+                serverResource.Owner = user != null ? user.Id : Guid.NewGuid();
             }
 
             return Ok(this.ModelMapper.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource)));

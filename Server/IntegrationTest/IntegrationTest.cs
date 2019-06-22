@@ -12,8 +12,6 @@ namespace todoweb.Server.IntegrationTest
     using todoweb.Client.Models.Contract;
     using todoweb.Server;
     using Client = todoweb.Client.Models;
-    using todoweb.Client.Models;
-    using FluentAssertions;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
@@ -76,7 +74,7 @@ namespace todoweb.Server.IntegrationTest
             var httpClient = this.factory_.CreateClient();
 
             var userClient = new UserClient(httpClient);
-            var user = new User
+            var user = new Client.User
             {
                 Email = "foo@bar.com",
                 Password = "test1234"
@@ -99,7 +97,6 @@ namespace todoweb.Server.IntegrationTest
                 options: (o) => o.Excluding(t => t.Id));
 
             await userClient.DeleteAsync(createdUser.Id);
-            await userClient.LogoutAsync();
         }
 
         [Fact]

@@ -18,17 +18,29 @@
         }
         public User GetUserFromRequest(HttpRequest request)
         {
-            if (!Guid.TryParse(request.HttpContext.Session.GetString(SessionKey), out var sessionId))
+            if (!request.Cookies.Keys.Contains(SessionKey))
             {
                 return null;
             }
-            return this.sessionManager_.GetUserFromSession(sessionId);
+
+            if (!Guid.TryParse(request.Cookies[SessionKey].ToString(), out var sessionId))
+            {
+                return null;
+            }
+
+            // If we have a sessionId but no user, delete the session
+            var user = this.sessionManager_.GetUserFromSession(sessionId);
+            if (user == null)
+            {
+                this.DeleteSession(request);
+            }
+            return user;
         }
 
         public void CreateOrUpdateSession(User user, HttpRequest request)
         {
             var sessionId = this.sessionManager_.CreateOrUpdateSession(user);
-            request.HttpContext.Session.SetString(SessionKey, sessionId.ToString());
+            request.HttpContext.Response.Cookies.Append(SessionKey, sessionId.ToString());
         }
 
         public bool DeleteSession(HttpRequest request)
