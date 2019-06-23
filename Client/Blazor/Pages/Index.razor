@@ -1,21 +1,23 @@
 ﻿@page "/"
+@using todoweb.Client
 @using todoweb.Client.Models
 @inject HttpClient httpClient
 
 <h1>todoweb</h1>
 
-@if (fetched == false)
+@if (loaded == false)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    if (todos == null)
+    if (loggedInUser == null)
     {
-        <p>Please login.</p>
+        <p>Please <a href="/bzr/login">login</a>.</p>
     }
     else
     {
+        <p>Hello, @loggedInUser.Email</p>
         <p>Your current TODOs are:</p>
         <ul>
             @foreach (var todo in todos)
@@ -35,12 +37,21 @@ else
 }
 
 @functions {
+    private ITodoClient GetTodoClient()
+    {
+        return new TodoClient(httpClient);
+    }
 
-    private async Task<IEnumerable<Todo>> GetTodos()
+    private IUserClient GetUserClient()
+    {
+        return new UserClient(httpClient);
+    }
+
+    private async Task<User> GetLoggedInUser()
     {
         try
         {
-            return await httpClient.GetJsonAsync<IEnumerable<Todo>>("../api/todo");
+            return await GetUserClient().GetCurrentAsync();
         }
         catch
         {
@@ -48,18 +59,36 @@ else
         }
     }
 
+    private async Task<IEnumerable<Todo>> GetTodos()
+    {
+        try
+        {
+            return await GetTodoClient().GetAllAsync();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    User loggedInUser;
     ICollection<Todo> todos;
-    bool fetched = false;
+    bool loaded = false;
     protected override async Task OnInitAsync()
     {
-        todos = (await GetTodos())?.ToList();
-        fetched = true;
+        loggedInUser = await GetLoggedInUser();
+
+        if (loggedInUser != null)
+        {
+            todos = (await GetTodos())?.ToList();
+        }
+        loaded = true;
     }
 
     Todo newTodo = new Todo();
     private async void HandleNewTodo()
     {
-        await httpClient.PostJsonAsync<Todo>("../api/todo", newTodo);
+        await GetTodoClient().CreateAsync(newTodo);
         todos?.Add(newTodo);
         newTodo = new Todo();
         this.StateHasChanged();

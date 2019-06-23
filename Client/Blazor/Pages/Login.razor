@@ -6,25 +6,71 @@
 
 @if (loggedInUser == null)
 {
-    <p><em>Logging in...</em></p>
+    <b>Login:</b><br/>
+    <EditForm Model="@formUser" OnValidSubmit="@HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>Email:</label><InputText id="email" bind-Value="@formUser.Email" /><br />
+        <label>Password:</label><InputText id="password" bind-Value="@formUser.Password" /><br />
+        <label>Create?</label><InputCheckbox Id="create" bind-Value="@createUser" /><br />
+        <button type="submit">Submit</button>
+    </EditForm>
 }
 else
 {
-   <p>Hello, test @loggedInUser.Email!</p>
+    <p>Hello, @loggedInUser.Email!</p>
+    <button onclick="@HandleLogout">Logout</button>
 }
 
 @functions {
-    User loggedInUser = null;
+    private IUserClient GetUserClient()
+    {
+        return new UserClient(httpClient);
+    }
 
+    User loggedInUser;
     protected override async Task OnInitAsync()
     {
-        var user = new User
+        try
         {
-            Email = "foo@bar.com",
-            Password = "test1234"
-        };
-        var createdUser = await httpClient.PostJsonAsync<User>("../api/user", user);
-        user.Id = createdUser.Id;
-        loggedInUser = await httpClient.PostJsonAsync<User>("../api/user/login", user);
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
+    User formUser = new User();
+    bool createUser = false;
+    private async void HandleLogin()
+    {
+        try
+        {
+            if (createUser)
+            {
+                await GetUserClient().CreateAsync(formUser);
+            }
+            loggedInUser = await GetUserClient().LoginAsync(formUser);
+        }
+        catch
+        {
+            // Do nothing
+        }
+        this.StateHasChanged();
+    }
+
+    private async void HandleLogout()
+    {
+        try
+        {
+            await GetUserClient().LogoutAsync();
+            loggedInUser = null;
+        }
+        catch
+        {
+            // Do nothing
+        }
+        this.StateHasChanged();
     }
 }

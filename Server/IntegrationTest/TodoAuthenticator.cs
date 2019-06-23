@@ -20,14 +20,14 @@
                 Email = "foo@bar.com",
                 Password = "test1234"
             };
-            var createdUser = await this.userClient_.CreateAsync(user);
-            await userClient_.LoginAsync(user);
+            await this.userClient_.CreateAsync(user);
+            await this.userClient_.LoginAsync(user);
             return true;
         }
 
         public async Task<bool> Unauthenticate()
         {
-            return await userClient_.LogoutAsync();
+            return await this.userClient_.LogoutAsync();
         }
     }
 }

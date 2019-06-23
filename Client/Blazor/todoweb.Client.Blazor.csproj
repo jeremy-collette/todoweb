@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\todoweb.Client.Models\todoweb.Client.Models.csproj" />
+    <ProjectReference Include="..\Source\todoweb.Client.csproj" />
   </ItemGroup>
 
 </Project>

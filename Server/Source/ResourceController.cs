@@ -122,6 +122,11 @@
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
 
             var serverResource = resourceManager_.Get(id);
+            if (serverResource == null)
+            {
+                return NotFound();
+            }
+
             if (!this.authorizationPolicy_.CanRead(user, serverResource))
             {
                 return Unauthorized();

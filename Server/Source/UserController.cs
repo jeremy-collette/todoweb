@@ -26,6 +26,19 @@
         }
 
         [Route("login")]
+        [HttpGet]
+        public ActionResult<Client.User> GetCurrent()
+        {
+            var serverUser = this.httpSessionManager_.GetUserFromRequest(Request);
+            if (serverUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(this.ModelMapper.Map<Client.User>(serverUser));
+        }
+
+        [Route("login")]
         [HttpPost]
         public ActionResult<Client.User> Login([FromBody] Client.User user)
         {
@@ -37,7 +50,7 @@
             }
 
             this.httpSessionManager_.CreateOrUpdateSession(serverUser, Request);
-            return this.ModelMapper.Map<Client.User>(serverUser);
+            return Ok(this.ModelMapper.Map<Client.User>(serverUser));
         }
 
         [Route("logout")]
