@@ -3,15 +3,22 @@ using FluentAssertions.Equivalency;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using todoweb.Client.Models;
 using todoweb.Client.Models.Contract;
 
 namespace todoweb.Server.IntegrationTest
 {
     public static class ResourceLifecycleIntegrationTest
     {
-        public async static Task TestResource<TClientResource>(IResourceClient<TClientResource> client, Func<TClientResource> createFactory, Func<TClientResource, TClientResource> updateFactory, Func<EquivalencyAssertionOptions<TClientResource>, EquivalencyAssertionOptions<TClientResource>> options)
+        public async static Task TestResource<TClientResource>(IResourceClient<TClientResource> client, Func<TClientResource> createFactory, Func<TClientResource, TClientResource> updateFactory, Func<EquivalencyAssertionOptions<TClientResource>, EquivalencyAssertionOptions<TClientResource>> options, IAuthenticator authenticator = null)
             where TClientResource : IClientResource
         {
+            // Authenticate
+            if (authenticator != null)
+            {
+                (await authenticator.Authenticate()).Should().BeTrue();
+            }
+
             // Should be empty
             (await client.GetAllAsync()).Should().BeEmpty();
 
@@ -29,6 +36,12 @@ namespace todoweb.Server.IntegrationTest
             // Delete resource
             await client.DeleteAsync(updatedModel.Id);
             (await client.GetAllAsync()).Should().BeEmpty();
+
+            // Unauthenticate
+            if (authenticator != null)
+            {
+                (await authenticator.Unauthenticate()).Should().BeTrue();
+            }
 
             return;
         }

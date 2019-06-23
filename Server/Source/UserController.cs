@@ -36,7 +36,6 @@
                 return NotFound();
             }
 
-            var current = this.httpSessionManager_.GetUserFromRequest(Request);
             this.httpSessionManager_.CreateOrUpdateSession(serverUser, Request);
             return this.ModelMapper.Map<Client.User>(serverUser);
         }

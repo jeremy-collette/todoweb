@@ -16,17 +16,10 @@
         {
             this.sessionManager_ = sessionManager;
         }
+
         public User GetUserFromRequest(HttpRequest request)
         {
-            if (!request.Cookies.Keys.Contains(SessionKey))
-            {
-                return null;
-            }
-
-            if (!Guid.TryParse(request.Cookies[SessionKey].ToString(), out var sessionId))
-            {
-                return null;
-            }
+            var sessionId = this.GetSessionId(request);
 
             // If we have a sessionId but no user, delete the session
             var user = this.sessionManager_.GetUserFromSession(sessionId);
@@ -40,17 +33,37 @@
         public void CreateOrUpdateSession(User user, HttpRequest request)
         {
             var sessionId = this.sessionManager_.CreateOrUpdateSession(user);
-            request.HttpContext.Response.Cookies.Append(SessionKey, sessionId.ToString());
+            this.SetSessionId(request, sessionId);
         }
 
         public bool DeleteSession(HttpRequest request)
         {
-            var sessionId = Guid.Parse(request.HttpContext.Session.GetString(SessionKey));
-            if (sessionId == null)
+            var sessionId = this.GetSessionId(request);
+            if (sessionId == Guid.Empty)
             {
                 return false;
             }
             return this.sessionManager_.DeleteSession(sessionId);
+        }
+
+        private Guid GetSessionId(HttpRequest request)
+        {
+            if (!request.Cookies.Keys.Contains(SessionKey))
+            {
+                return Guid.Empty;
+            }
+
+            if (!Guid.TryParse(request.Cookies[SessionKey].ToString(), out var sessionId))
+            {
+                return Guid.Empty;
+            }
+
+            return sessionId;
+        }
+
+        private void SetSessionId(HttpRequest request, Guid sessionId)
+        {
+            request.HttpContext.Response.Cookies.Append(SessionKey, sessionId.ToString());
         }
     }
 }
