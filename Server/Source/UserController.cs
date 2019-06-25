@@ -1,13 +1,11 @@
 ﻿namespace todoweb.Server
 {
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
+
+    using Microsoft.AspNetCore.Mvc;
+
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
-
     using Client = Client.Models;
     using Server = Models;
 

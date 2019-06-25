@@ -22,7 +22,7 @@ else
         <ul>
             @foreach (var todo in todos)
             {
-                <li>@todo.Title</li>
+                <li>@todo.Title <button onclick="@(() => HandleDelete(todo.Id))">Delete</button></li>
             }
         </ul>
 
@@ -47,50 +47,60 @@ else
         return new UserClient(httpClient);
     }
 
-    private async Task<User> GetLoggedInUser()
-    {
-        try
-        {
-            return await GetUserClient().GetCurrentAsync();
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private async Task<IEnumerable<Todo>> GetTodos()
-    {
-        try
-        {
-            return await GetTodoClient().GetAllAsync();
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
     User loggedInUser;
+    private async Task FetchLoggedInUser()
+    {
+        try
+        {
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
     ICollection<Todo> todos;
+    private async Task FetchTodos()
+    {
+        try
+        {
+            todos = await GetTodoClient().GetAllAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
     bool loaded = false;
     protected override async Task OnInitAsync()
     {
-        loggedInUser = await GetLoggedInUser();
+        await FetchLoggedInUser();
 
         if (loggedInUser != null)
         {
-            todos = (await GetTodos())?.ToList();
+            await FetchTodos();
         }
+
         loaded = true;
+        this.StateHasChanged();
     }
 
     Todo newTodo = new Todo();
     private async void HandleNewTodo()
     {
         await GetTodoClient().CreateAsync(newTodo);
-        todos?.Add(newTodo);
         newTodo = new Todo();
+
+        await FetchTodos();
+        this.StateHasChanged();
+    }
+
+    private async void HandleDelete(Guid id)
+    {
+        await GetTodoClient().DeleteAsync(id);
+        await FetchTodos();
         this.StateHasChanged();
     }
 }
