@@ -22,7 +22,27 @@ else
         <ul>
             @foreach (var todo in todos)
             {
-                <li>@todo.Title <button onclick="@(() => HandleDelete(todo.Id))">Delete</button></li>
+                if (IsBeingEdited(todo))
+                {
+                    <li>
+                        <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <InputText id="title" bind-Value="@todo.Title" />
+                            <button onclick="@(() => HandleEditToggle(todo))">Cancel</button>
+                            <button type="submit">Save</button>
+                        </EditForm>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @todo.Title
+                        <button onclick="@(() => HandleEditToggle(todo))">Edit</button>
+                        <button onclick="@(() => HandleDelete(todo))">Delete</button>
+                    </li>
+                }
+
             }
         </ul>
 
@@ -97,10 +117,36 @@ else
         this.StateHasChanged();
     }
 
-    private async void HandleDelete(Guid id)
+    private async void HandleDelete(Todo todo)
     {
-        await GetTodoClient().DeleteAsync(id);
+        await GetTodoClient().DeleteAsync(todo.Id);
         await FetchTodos();
+        this.StateHasChanged();
+    }
+
+    ISet<Guid> beingEdited = new HashSet<Guid>();
+    private bool IsBeingEdited(Todo todo)
+    {
+        return beingEdited.Contains(todo.Id);
+    }
+
+    private async void HandleEdit(Todo todo)
+    {
+        await GetTodoClient().CreateOrUpdateAsync(todo.Id, todo);
+
+        this.HandleEditToggle(todo);
+    }
+
+    private void HandleEditToggle(Todo todo)
+    {
+        if (beingEdited.Contains(todo.Id))
+        {
+            beingEdited.Remove(todo.Id);
+        }
+        else
+        {
+            beingEdited.Add(todo.Id);
+        }
         this.StateHasChanged();
     }
 }
