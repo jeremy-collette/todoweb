@@ -1,0 +1,93 @@
+﻿@using todoweb.Client.Models
+@inject HttpClient httpClient
+
+    <div>
+        <p><b>@Title</b></p>
+        @if (this.Todos.Count == 0)
+        {
+            <div style="padding-left:20px">
+                <p><i>There are currently no TODOs.</i></p>
+            </div>
+        }
+        <ul>
+            @foreach (var todo in Todos)
+            {
+                if (IsBeingEdited(todo))
+                {
+                    <li>
+                        <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <InputText id="title" bind-Value="@todo.Title" />
+                            <label>Completed:</label><InputCheckbox Id="done" bind-Value="@todo.Done" />
+                            <button onclick="@(() => HandleEditToggle(todo))">Cancel</button>
+                            <button type="submit">Save</button>
+                        </EditForm>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @todo.Title
+                        <button onclick="@(() => HandleEditToggle(todo))">Edit</button>
+                        <button onclick="@(() => HandleDelete(todo))">Delete</button>
+                    </li>
+                }
+
+            }
+        </ul>
+    </div>
+
+@functions {
+    [Parameter]
+    private string Title { get; set; }
+
+    [Parameter]
+    private ICollection<Todo> Todos { get; set; }
+
+    [Parameter]
+    private Action OnEdit { get; set; }
+
+    private ITodoClient GetTodoClient()
+    {
+        return new TodoClient(httpClient);
+    }
+
+    private IUserClient GetUserClient()
+    {
+        return new UserClient(httpClient);
+    }
+
+    private async void HandleDelete(Todo todo)
+    {
+        await GetTodoClient().DeleteAsync(todo.Id);
+        this.Todos.Remove(todo);
+        this.StateHasChanged();
+    }
+
+    ISet<Guid> beingEdited = new HashSet<Guid>();
+    private bool IsBeingEdited(Todo todo)
+    {
+        return beingEdited.Contains(todo.Id);
+    }
+
+    private async void HandleEdit(Todo todo)
+    {
+        await GetTodoClient().CreateOrUpdateAsync(todo.Id, todo);
+        this.HandleEditToggle(todo);
+        this.OnEdit.Invoke();
+    }
+
+    private void HandleEditToggle(Todo todo)
+    {
+        if (beingEdited.Contains(todo.Id))
+        {
+            beingEdited.Remove(todo.Id);
+        }
+        else
+        {
+            beingEdited.Add(todo.Id);
+        }
+        this.StateHasChanged();
+    }
+}

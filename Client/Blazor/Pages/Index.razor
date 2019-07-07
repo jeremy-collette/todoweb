@@ -18,34 +18,9 @@ else
     else
     {
         <p>Hello, @loggedInUser.Email</p>
-        <p>Your current TODOs are:</p>
-        <ul>
-            @foreach (var todo in todos)
-            {
-                if (IsBeingEdited(todo))
-                {
-                    <li>
-                        <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
-                            <InputText id="title" bind-Value="@todo.Title" />
-                            <button onclick="@(() => HandleEditToggle(todo))">Cancel</button>
-                            <button type="submit">Save</button>
-                        </EditForm>
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        @todo.Title
-                        <button onclick="@(() => HandleEditToggle(todo))">Edit</button>
-                        <button onclick="@(() => HandleDelete(todo))">Delete</button>
-                    </li>
-                }
-
-            }
-        </ul>
-
+        <TodoList Title="Your current TODOs are:" Todos="@allTodos.Where(t => !t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" />
+        <br/>
+        <br/>
         <b>Create new TODO:</b>
         <EditForm Model="@newTodo" OnValidSubmit="@HandleNewTodo">
             <DataAnnotationsValidator />
@@ -53,6 +28,9 @@ else
             <InputText id="title" bind-Value="@newTodo.Title" />
             <button type="submit">Submit</button>
         </EditForm>
+        <br/>
+        <br/>
+        <TodoList Title="Previously completed TODOs:" Todos="@allTodos.Where(t => t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" />
     }
 }
 
@@ -80,12 +58,12 @@ else
         }
     }
 
-    ICollection<Todo> todos;
+    ICollection<Todo> allTodos;
     private async Task FetchTodos()
     {
         try
         {
-            todos = await GetTodoClient().GetAllAsync();
+            allTodos = await GetTodoClient().GetAllAsync();
         }
         catch
         {
@@ -117,36 +95,8 @@ else
         this.StateHasChanged();
     }
 
-    private async void HandleDelete(Todo todo)
+    private void HandleEditTodo()
     {
-        await GetTodoClient().DeleteAsync(todo.Id);
-        await FetchTodos();
-        this.StateHasChanged();
-    }
-
-    ISet<Guid> beingEdited = new HashSet<Guid>();
-    private bool IsBeingEdited(Todo todo)
-    {
-        return beingEdited.Contains(todo.Id);
-    }
-
-    private async void HandleEdit(Todo todo)
-    {
-        await GetTodoClient().CreateOrUpdateAsync(todo.Id, todo);
-
-        this.HandleEditToggle(todo);
-    }
-
-    private void HandleEditToggle(Todo todo)
-    {
-        if (beingEdited.Contains(todo.Id))
-        {
-            beingEdited.Remove(todo.Id);
-        }
-        else
-        {
-            beingEdited.Add(todo.Id);
-        }
         this.StateHasChanged();
     }
 }
