@@ -57,7 +57,7 @@ namespace todoweb.Client
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.1.0 (NJsonSchema v10.0.19.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class TodoClient : ITodoClient
     {
-        private string _baseUrl = "https://localhost:44372";
+        private string _baseUrl = "https://todowebserver20190707042531.azurewebsites.net/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -580,7 +580,7 @@ namespace todoweb.Client
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.1.0 (NJsonSchema v10.0.19.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class UserClient : IUserClient
     {
-        private string _baseUrl = "https://localhost:44372";
+        private string _baseUrl = "https://todowebserver20190707042531.azurewebsites.net/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
