@@ -57,7 +57,6 @@ namespace todoweb.Client
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.1.0 (NJsonSchema v10.0.19.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class TodoClient : ITodoClient
     {
-        private string _baseUrl = "https://todowebserver20190707042531.azurewebsites.net/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -70,12 +69,6 @@ namespace todoweb.Client
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-        }
-    
-        public string BaseUrl 
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
     
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -96,7 +89,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<Todo> CreateAsync(Todo resource, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/todo");
+            urlBuilder_.Append("api/todo");
     
             var client_ = _httpClient;
             try
@@ -164,7 +157,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Todo>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/todo");
+            urlBuilder_.Append("api/todo");
     
             var client_ = _httpClient;
             try
@@ -232,7 +225,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/todo/{id}");
+            urlBuilder_.Append("api/todo/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -304,7 +297,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/todo/{id}");
+            urlBuilder_.Append("api/todo/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -373,7 +366,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/todo/{id}");
+            urlBuilder_.Append("api/todo/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -580,7 +573,6 @@ namespace todoweb.Client
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.1.0 (NJsonSchema v10.0.19.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class UserClient : IUserClient
     {
-        private string _baseUrl = "https://todowebserver20190707042531.azurewebsites.net/";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -593,12 +585,6 @@ namespace todoweb.Client
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-        }
-    
-        public string BaseUrl 
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
     
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -619,7 +605,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<User> GetCurrentAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/login");
+            urlBuilder_.Append("api/user/login");
     
             var client_ = _httpClient;
             try
@@ -684,7 +670,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<User> LoginAsync(User user, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/login");
+            urlBuilder_.Append("api/user/login");
     
             var client_ = _httpClient;
             try
@@ -752,7 +738,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<bool> LogoutAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/logout");
+            urlBuilder_.Append("api/user/logout");
     
             var client_ = _httpClient;
             try
@@ -818,7 +804,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<User> CreateAsync(User resource, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user");
+            urlBuilder_.Append("api/user");
     
             var client_ = _httpClient;
             try
@@ -886,7 +872,7 @@ namespace todoweb.Client
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user");
+            urlBuilder_.Append("api/user");
     
             var client_ = _httpClient;
             try
@@ -954,7 +940,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/{id}");
+            urlBuilder_.Append("api/user/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1026,7 +1012,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/{id}");
+            urlBuilder_.Append("api/user/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1095,7 +1081,7 @@ namespace todoweb.Client
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/user/{id}");
+            urlBuilder_.Append("api/user/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
