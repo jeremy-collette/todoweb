@@ -5,7 +5,7 @@ using todoweb.Server.Models;
 
 namespace todoweb.Server.Core
 {
-    public class ResourceManager<TResource>
+    public class ListResourceManager<TResource>
         : IResourceManager<TResource>
         where TResource : IServerResource
     {

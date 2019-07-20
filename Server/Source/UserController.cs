@@ -6,6 +6,8 @@
 
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
+
     using Client = Client.Models;
     using Server = Models;
 
@@ -16,10 +18,11 @@
         private IResourceManager<Server.User> userManager_;
         private IHttpSessionManager httpSessionManager_;
 
-        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
-            : base(userManager, httpSessionManager, authorizationPolicy)
+        // TODO(@jez): Use interface
+        public UserController(DatabaseContext<Server.User> databaseContext, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
+            : base(new DatabaseResourceManager<Server.User>(databaseContext), httpSessionManager, authorizationPolicy)
         {
-            this.userManager_ = userManager;
+            this.userManager_ = new DatabaseResourceManager<Server.User>(databaseContext);
             this.httpSessionManager_ = httpSessionManager;
         }
 

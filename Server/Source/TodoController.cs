@@ -1,10 +1,10 @@
 ﻿namespace todoweb.Server
 {
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using System;
+
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
 
     using Client = Client.Models;
     using Server = Server.Models;
@@ -13,8 +13,9 @@
     public class TodoController
         : ResourceController<Client.Todo, Server.Todo>
     {
-        public TodoController(IResourceManager<Server.Todo> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
-            : base(resourceManager, httpSessionManager, authorizationPolicy)
+        // TODO(@jez): Use interface
+        public TodoController(DatabaseContext<Server.Todo> databaseContext, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
+            : base(new DatabaseResourceManager<Server.Todo>(databaseContext), httpSessionManager, authorizationPolicy)
         {
         }
     }

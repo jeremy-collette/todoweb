@@ -5,8 +5,10 @@ namespace todoweb.Server
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.ResponseCompression;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
     using todoweb.Server.Models;
@@ -25,14 +27,18 @@ namespace todoweb.Server
                 mimeTypes.AddRange(ResponseCompressionDefaults.MimeTypes);
                 opts.MimeTypes = mimeTypes;
             });
-            services.AddSingleton<IResourceManager<Todo>>(new ResourceManager<Todo>());
-            var userManager = new ResourceManager<User>();
+            services.AddSingleton<IResourceManager<Todo>>(new ListResourceManager<Todo>());
+            var userManager = new ListResourceManager<User>();
             services.AddSingleton<IResourceManager<User>>(userManager);
             var sessionManager = new SessionManager(userManager);
             services.AddSingleton<IHttpSessionManager>(new HttpSessionManager(sessionManager));
             services.AddSingleton<IAuthorizationPolicy<User>>(new UserAuthorizationPolicy());
             services.AddSingleton<IAuthorizationPolicy<Todo>>(new TodoAuthorizationPolicy());
             services.AddSwaggerDocument();
+
+            var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(connection));
+            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

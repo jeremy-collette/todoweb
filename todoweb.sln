@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server", "Server\So
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Client.Blazor", "Client\Blazor\todoweb.Client.Blazor.csproj", "{251505BD-AFA7-494C-9642-3A91BA4977D6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "todoweb.Server.UnitTest", "Server\UnitTest\todoweb.Server.UnitTest.csproj", "{D89F2752-9495-4590-8B4D-C709A5DDDFB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{251505BD-AFA7-494C-9642-3A91BA4977D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{251505BD-AFA7-494C-9642-3A91BA4977D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{251505BD-AFA7-494C-9642-3A91BA4977D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89F2752-9495-4590-8B4D-C709A5DDDFB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89F2752-9495-4590-8B4D-C709A5DDDFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89F2752-9495-4590-8B4D-C709A5DDDFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89F2752-9495-4590-8B4D-C709A5DDDFB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{E6748234-D087-4AAF-8E42-A604CEA60B8F} = {267E8613-7E1F-4159-807D-8831072634DC}
 		{FE68BE02-5EAC-4427-A439-66C5E0E80C8D} = {6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}
 		{251505BD-AFA7-494C-9642-3A91BA4977D6} = {267E8613-7E1F-4159-807D-8831072634DC}
+		{D89F2752-9495-4590-8B4D-C709A5DDDFB0} = {6B7D51D5-F4AC-45F4-8A67-B6A1AE9E3EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC87E2D6-7B7A-4A7E-8BB5-5A1C49F2C751}
