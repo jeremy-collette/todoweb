@@ -14,6 +14,7 @@
         public DatabaseResourceManager(DatabaseContext<TResource> context)
         {
             this.context_ = context;
+            this.context_.Database.EnsureCreated();
         }
 
         public TResource Add(TResource resource)

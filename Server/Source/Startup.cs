@@ -36,9 +36,10 @@ namespace todoweb.Server
             services.AddSingleton<IAuthorizationPolicy<Todo>>(new TodoAuthorizationPolicy());
             services.AddSwaggerDocument();
 
-            var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(connection));
-            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(connection));
+            var connection2 = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(connection2));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
