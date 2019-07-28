@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using todoweb.Server.Contract;
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class SessionManager : ISessionManager
@@ -11,11 +12,11 @@
         Dictionary<Guid, Guid> userToSessionMap_;
         IResourceManager<User> userManager_;
 
-        public SessionManager(IResourceManager<User> userManager)
+        public SessionManager(DatabaseContext<User> databaseContext)
         {
             this.sessionToUserMap_ = new Dictionary<Guid, Guid>();
             this.userToSessionMap_ = new Dictionary<Guid, Guid>();
-            this.userManager_ = userManager;
+            this.userManager_ = new DatabaseResourceManager<User>(databaseContext);
         }
 
         public Guid CreateOrUpdateSession(User user)

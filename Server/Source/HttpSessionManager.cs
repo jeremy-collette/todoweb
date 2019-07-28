@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Http;
 
     using todoweb.Server.Contract;
+    using todoweb.Server.Core;
     using todoweb.Server.Models;
 
     public class HttpSessionManager : IHttpSessionManager
@@ -12,9 +13,9 @@
         private const string SessionKey = "sessionId";
         private ISessionManager sessionManager_;
 
-        public HttpSessionManager(ISessionManager sessionManager)
+        public HttpSessionManager(DatabaseContext<User> databaseContext)
         {
-            this.sessionManager_ = sessionManager;
+            this.sessionManager_ = new SessionManager(databaseContext);
         }
 
         public User GetUserFromRequest(HttpRequest request)

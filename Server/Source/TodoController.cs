@@ -14,8 +14,8 @@
         : ResourceController<Client.Todo, Server.Todo>
     {
         // TODO(@jez): Use interface
-        public TodoController(DatabaseContext<Server.Todo> databaseContext, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
-            : base(new DatabaseResourceManager<Server.Todo>(databaseContext), httpSessionManager, authorizationPolicy)
+        public TodoController(DatabaseContext<Server.Todo> totoDatabaseContext, DatabaseContext<Server.User> userDatabaseContext, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
+            : base(new DatabaseResourceManager<Server.Todo>(totoDatabaseContext), new HttpSessionManager(userDatabaseContext), authorizationPolicy)
         {
         }
     }

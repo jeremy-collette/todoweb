@@ -27,15 +27,11 @@ namespace todoweb.Server
                 mimeTypes.AddRange(ResponseCompressionDefaults.MimeTypes);
                 opts.MimeTypes = mimeTypes;
             });
-            services.AddSingleton<IResourceManager<Todo>>(new ListResourceManager<Todo>());
-            var userManager = new ListResourceManager<User>();
-            services.AddSingleton<IResourceManager<User>>(userManager);
-            var sessionManager = new SessionManager(userManager);
-            services.AddSingleton<IHttpSessionManager>(new HttpSessionManager(sessionManager));
             services.AddSingleton<IAuthorizationPolicy<User>>(new UserAuthorizationPolicy());
             services.AddSingleton<IAuthorizationPolicy<Todo>>(new TodoAuthorizationPolicy());
             services.AddSwaggerDocument();
 
+            // TODO (@jez): Remove debug strings
             var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(connection));
             var connection2 = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";

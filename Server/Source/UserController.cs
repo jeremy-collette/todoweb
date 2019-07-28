@@ -19,11 +19,11 @@
         private IHttpSessionManager httpSessionManager_;
 
         // TODO(@jez): Use interface
-        public UserController(DatabaseContext<Server.User> databaseContext, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
-            : base(new DatabaseResourceManager<Server.User>(databaseContext), httpSessionManager, authorizationPolicy)
+        public UserController(DatabaseContext<Server.User> databaseContext, IAuthorizationPolicy<Server.User> authorizationPolicy)
+            : base(new DatabaseResourceManager<Server.User>(databaseContext), new HttpSessionManager(databaseContext), authorizationPolicy)
         {
             this.userManager_ = new DatabaseResourceManager<Server.User>(databaseContext);
-            this.httpSessionManager_ = httpSessionManager;
+            this.httpSessionManager_ = new HttpSessionManager(databaseContext);
         }
 
         [Route("login")]

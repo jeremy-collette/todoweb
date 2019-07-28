@@ -36,7 +36,6 @@
 
         public bool Delete(Guid id)
         {
-
             var found = this.context_.Resources.Find(id);
             if (found == null)
             {
