@@ -10,8 +10,8 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": null,
-      "configurationClass": null,
+      "clientBaseClass": "ClientBase",
+      "configurationClass": "ClientConfiguration",
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "injectHttpClient": true,
@@ -24,7 +24,7 @@
       "httpClientType": "System.Net.Http.HttpClient",
       "useHttpRequestMessageCreationMethod": false,
       "useBaseUrl": true,
-      "generateBaseUrlProperty": true,
+      "generateBaseUrlProperty": false,
       "generateSyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "public",
