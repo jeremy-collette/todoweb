@@ -18,12 +18,11 @@
         private IResourceManager<Server.User> userManager_;
         private IHttpSessionManager httpSessionManager_;
 
-        // TODO(@jez): Use interface
-        public UserController(DatabaseContext<Server.User> databaseContext, IAuthorizationPolicy<Server.User> authorizationPolicy)
-            : base(new DatabaseResourceManager<Server.User>(databaseContext), new HttpSessionManager(databaseContext), authorizationPolicy)
+        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
+            : base(userManager, httpSessionManager, authorizationPolicy)
         {
-            this.userManager_ = new DatabaseResourceManager<Server.User>(databaseContext);
-            this.httpSessionManager_ = new HttpSessionManager(databaseContext);
+            this.userManager_ = userManager;
+            this.httpSessionManager_ = httpSessionManager;
         }
 
         [Route("login")]

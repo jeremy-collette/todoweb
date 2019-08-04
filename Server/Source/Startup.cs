@@ -11,6 +11,7 @@ namespace todoweb.Server
 
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class Startup
@@ -27,8 +28,11 @@ namespace todoweb.Server
                 mimeTypes.AddRange(ResponseCompressionDefaults.MimeTypes);
                 opts.MimeTypes = mimeTypes;
             });
-            services.AddSingleton<IAuthorizationPolicy<User>>(new UserAuthorizationPolicy());
-            services.AddSingleton<IAuthorizationPolicy<Todo>>(new TodoAuthorizationPolicy());
+            services.AddScoped<IResourceManager<User>, DatabaseResourceManager<User>>();
+            services.AddScoped<IResourceManager<Todo>, DatabaseResourceManager<Todo>>();
+            services.AddScoped<IAuthorizationPolicy<User>, UserAuthorizationPolicy>();
+            services.AddScoped<IAuthorizationPolicy<Todo>, TodoAuthorizationPolicy>();
+            services.AddScoped<IHttpSessionManager, HttpSessionManager>();
             services.AddSwaggerDocument();
 
             // TODO (@jez): Remove debug strings
