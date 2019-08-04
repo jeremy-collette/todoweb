@@ -8,16 +8,18 @@
 
     public class UserResourceClient : ResourceClient<Client.User>
     {
+        private IUserClient innerClient_;
 
         public UserResourceClient(IUserClient innerClient)
             : base(innerClient)
         {
+            this.innerClient_ = innerClient;
         }
 
         public override async Task<Client.User> CreateAsync(Client.User resource)
         {
-            await ((IUserClient)this.resourceClient_).CreateAsync(resource);
-            return await ((IUserClient)this.resourceClient_).LoginAsync(resource);
+            await this.innerClient_.CreateAsync(resource);
+            return await this.innerClient_.LoginAsync(resource);
         }
     }
 }
