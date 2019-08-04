@@ -50,12 +50,12 @@
 
     private ITodoClient GetTodoClient()
     {
-        return new TodoClient(httpClient);
+        return ClientFactory.CreateTodoClient(httpClient);
     }
 
     private IUserClient GetUserClient()
     {
-        return new UserClient(httpClient);
+        return ClientFactory.CreateUserClient(httpClient);
     }
 
     private async void HandleDelete(Todo todo)

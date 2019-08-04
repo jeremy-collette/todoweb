@@ -22,7 +22,7 @@ namespace todoweb.Server.IntegrationTest
         {
             var httpClient = this.factory_.CreateClient();
 
-            var client = new ResourceClient<Client.Todo>(typeof(TodoClient), httpClient);
+            var client = new ResourceClient<Client.Todo>(ClientFactory.CreateTodoClient(httpClient));
             await ResourceLifecycleIntegrationTest.TestResource(
                 client,
                 createFactory: () => new Client.Todo
@@ -35,14 +35,14 @@ namespace todoweb.Server.IntegrationTest
                     return todo;
                 },
                 options: (o) => o.Excluding(t => t.Id),
-                authenticator: new TodoAuthenticator(new UserClient(httpClient)));
+                authenticator: new TodoAuthenticator(ClientFactory.CreateUserClient(httpClient)));
         }
 
         [Fact]
         public async void UserLifecycle()
         {
             var httpClient = this.factory_.CreateClient();
-            var client = new UserResourceClient(httpClient);
+            var client = new UserResourceClient(ClientFactory.CreateUserClient(httpClient));
 
             await ResourceLifecycleIntegrationTest.TestResource(
                 client,

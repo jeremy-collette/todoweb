@@ -8,18 +8,16 @@
 
     public class UserResourceClient : ResourceClient<Client.User>
     {
-        private IUserClient innerClient;
 
-        public UserResourceClient(HttpClient httpClient)
-            : base(typeof(UserClient), httpClient)
+        public UserResourceClient(IUserClient innerClient)
+            : base(innerClient)
         {
-            this.innerClient = new UserClient(httpClient);
         }
 
         public override async Task<Client.User> CreateAsync(Client.User resource)
         {
-            await this.innerClient.CreateAsync(resource);
-            return await this.innerClient.LoginAsync(resource);
+            await ((IUserClient)this.resourceClient_).CreateAsync(resource);
+            return await ((IUserClient)this.resourceClient_).LoginAsync(resource);
         }
     }
 }

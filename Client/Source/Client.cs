@@ -71,11 +71,6 @@ namespace todoweb.Client
                 return settings;
             });
         }
-
-        public TodoClient(System.Net.Http.HttpClient httpClient) 
-            : this(new ClientConfiguration { BaseUrl = httpClient.BaseAddress.GetLeftPart(UriPartial.Authority) }, httpClient)
-        {
-        }
     
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
     
@@ -591,11 +586,6 @@ namespace todoweb.Client
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-        }
-
-        public UserClient(System.Net.Http.HttpClient httpClient)
-            : this(new ClientConfiguration { BaseUrl = httpClient.BaseAddress.GetLeftPart(UriPartial.Authority) }, httpClient)
-        {
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }

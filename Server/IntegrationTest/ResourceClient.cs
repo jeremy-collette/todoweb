@@ -12,12 +12,12 @@
                 where TClientResource : IClientResource
     {
         private Type clientType_;
-        private object resourceClient_;
+        protected object resourceClient_;
 
-        public ResourceClient(Type clientType, HttpClient httpClient)
+        public ResourceClient(object resourceClient)
         {
-            this.clientType_ = clientType;
-            this.resourceClient_ = Activator.CreateInstance(clientType, httpClient);
+            this.resourceClient_ = resourceClient;
+            this.clientType_ = resourceClient.GetType();
         }
 
         public virtual async Task<TClientResource> CreateAsync(TClientResource resource)
