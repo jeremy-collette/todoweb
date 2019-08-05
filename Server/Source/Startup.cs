@@ -36,10 +36,10 @@ namespace todoweb.Server
             services.AddSwaggerDocument();
 
             // TODO (@jez): Remove debug strings
-            var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(connection));
-            var connection2 = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=testdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(connection2));
+            var todoDbConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TodoDbTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(todoDbConnection));
+            var userDbConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=UserDbTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(userDbConnection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

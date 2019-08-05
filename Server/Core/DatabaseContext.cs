@@ -1,7 +1,6 @@
 ﻿namespace todoweb.Server.Core
 {
     using Microsoft.EntityFrameworkCore;
-
     using todoweb.Server.Models;
 
     public class DatabaseContext<TResource>
@@ -12,6 +11,12 @@
 
         public DatabaseContext(DbContextOptions<DatabaseContext<TResource>> options)
             : base(options)
-        { }
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TResource>().ToTable(typeof(TResource).Name);
+        }
     }
 }
