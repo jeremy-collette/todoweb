@@ -1,11 +1,12 @@
 namespace todoweb.Server
 {
     using System.Collections.Generic;
-
+    using System.Configuration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -16,6 +17,13 @@ namespace todoweb.Server
 
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -36,10 +44,8 @@ namespace todoweb.Server
             services.AddSwaggerDocument();
 
             // TODO (@jez): Remove debug strings
-            var todoDbConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TodoDbTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(todoDbConnection));
-            var userDbConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=UserDbTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(userDbConnection));
+            services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(this.Configuration.GetConnectionString("TodoDatabase")));
+            services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(this.Configuration.GetConnectionString("UserDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
