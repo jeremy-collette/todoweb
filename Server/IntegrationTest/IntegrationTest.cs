@@ -1,12 +1,15 @@
 namespace todoweb.Server.IntegrationTest
 {
+    using System.IO;
+
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.Configuration.Json;
     using Xunit;
 
     using todoweb.Client;
     using todoweb.Server;
     using Client = Client.Models;
-    using System;
+    using Microsoft.Extensions.Configuration;
 
     public class TodowebIntegrationTest
         : IClassFixture<WebApplicationFactory<Program>>
@@ -15,7 +18,16 @@ namespace todoweb.Server.IntegrationTest
 
         public TodowebIntegrationTest(WebApplicationFactory<Program> factory)
         {
-            this.factory_ = factory;
+            var projectDir = Directory.GetCurrentDirectory();
+            var configPath = Path.Combine(projectDir, "appsettings.Test.json");
+
+            this.factory_ = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration((context, conf) =>
+                {
+                    conf.AddJsonFile(configPath).Build();
+                });
+            });
         }
 
         [Fact]

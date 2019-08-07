@@ -10,19 +10,19 @@
     <EditForm Model="@formUser" OnValidSubmit="@HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <label>Email:</label><InputText id="email" bind-Value="@formUser.Email" /><br />
-        <label>Password:</label><InputText id="password" bind-Value="@formUser.Password" /><br />
-        <label>Create?</label><InputCheckbox Id="create" bind-Value="@createUser" /><br />
+        <label>Email:</label><InputText id="email" @bind-Value="@formUser.Email" /><br />
+        <label>Password:</label><InputText id="password" @bind-Value="@formUser.Password" /><br />
+        <label>Create?</label><InputCheckbox Id="create" @bind-Value="@createUser" /><br />
         <button type="submit">Submit</button>
     </EditForm>
 }
 else
 {
     <p>Hello, @loggedInUser.Email!</p>
-    <button onclick="@HandleLogout">Logout</button>
+    <button @onclick="@HandleLogout">Logout</button>
 }
 
-@functions {
+@code {
     private IUserClient GetUserClient()
     {
         return ClientFactory.CreateUserClient(httpClient);

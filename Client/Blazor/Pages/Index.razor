@@ -13,7 +13,7 @@ else
 {
     if (loggedInUser == null)
     {
-        <p>Please <a href="/bzr/login">login</a>.</p>
+        <p>Please <a href="/login">login</a>.</p>
     }
     else
     {
@@ -25,7 +25,7 @@ else
         <EditForm Model="@newTodo" OnValidSubmit="@HandleNewTodo">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <InputText id="title" bind-Value="@newTodo.Title" />
+            <InputText id="title" @bind-Value="@newTodo.Title" />
             <button type="submit">Submit</button>
         </EditForm>
         <br/>

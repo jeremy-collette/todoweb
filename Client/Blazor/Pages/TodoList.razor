@@ -18,9 +18,9 @@
                         <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
                             <DataAnnotationsValidator />
                             <ValidationSummary />
-                            <InputText id="title" bind-Value="@todo.Title" />
-                            <label>Completed:</label><InputCheckbox Id="done" bind-Value="@todo.Done" />
-                            <button onclick="@(() => HandleEditToggle(todo))">Cancel</button>
+                            <InputText id="title" @bind-Value="@todo.Title" />
+                            <label>Completed:</label><InputCheckbox Id="done" @bind-Value="@todo.Done" />
+                            <button @onclick="@(() => HandleEditToggle(todo))">Cancel</button>
                             <button type="submit">Save</button>
                         </EditForm>
                     </li>
@@ -29,8 +29,8 @@
                 {
                     <li>
                         @todo.Title
-                        <button onclick="@(() => HandleEditToggle(todo))">Edit</button>
-                        <button onclick="@(() => HandleDelete(todo))">Delete</button>
+                        <button @onclick="@(() => HandleEditToggle(todo))">Edit</button>
+                        <button @onclick="@(() => HandleDelete(todo))">Delete</button>
                     </li>
                 }
 

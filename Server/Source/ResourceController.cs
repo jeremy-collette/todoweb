@@ -104,18 +104,8 @@
         public ActionResult<IEnumerable<TClientResource>> Get()
         {
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
-
             var resources = resourceManager_.GetAll().ToList();
-            if (resources.Count == 0)
-            {
-                return Ok(new List<TClientResource>());
-            }
-
             var authorizedResources = resources.Where(resource => this.authorizationPolicy_.CanRead(user, resource)).ToList();
-            if (authorizedResources.Count == 0)
-            {
-                return Unauthorized();
-            }
 
             return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(resources));
         }

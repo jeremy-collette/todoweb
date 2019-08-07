@@ -53,7 +53,6 @@ namespace todoweb.Server
         {
             app.UseSession();
             app.UseMvc();
-
             app.UseResponseCompression();
 
             if (env.IsDevelopment())
@@ -62,12 +61,15 @@ namespace todoweb.Server
                 app.UseBlazorDebugging();
             }
 
+            //app.Map("/bzr", child => { child.UseClientSideBlazorFiles<Client.Blazor.Program>(); });
+            app.UseClientSideBlazorFiles<Client.Blazor.Program>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
+                endpoints.MapFallbackToClientSideBlazor<Client.Blazor.Program>("index.html");
             });
-            app.Map("/bzr", child => { child.UseBlazor<Client.Blazor.Program>(); });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
