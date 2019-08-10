@@ -1,7 +1,7 @@
 namespace todoweb.Server
 {
     using System.Collections.Generic;
-    using System.Configuration;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.ResponseCompression;
@@ -28,6 +28,7 @@ namespace todoweb.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
             services.AddSession(opts => opts.Cookie.IsEssential = true);
             services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson();
             services.AddResponseCompression(opts =>
@@ -43,7 +44,6 @@ namespace todoweb.Server
             services.AddScoped<IHttpSessionManager, HttpSessionManager>();
             services.AddSwaggerDocument();
 
-            // TODO (@jez): Remove debug strings
             services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(this.Configuration.GetConnectionString("TodoDatabase")));
             services.AddDbContext<DatabaseContext<User>>(o => o.UseSqlServer(this.Configuration.GetConnectionString("UserDatabase")));
         }
@@ -61,7 +61,6 @@ namespace todoweb.Server
                 app.UseBlazorDebugging();
             }
 
-            //app.Map("/bzr", child => { child.UseClientSideBlazorFiles<Client.Blazor.Program>(); });
             app.UseClientSideBlazorFiles<Client.Blazor.Program>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

@@ -4,10 +4,13 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <ApplicationInsightsResourceId>/subscriptions/f4df0bd6-0a4c-4758-ae98-510a339340e8/resourcegroups/todoweb/providers/microsoft.insights/components/todowebServer20190707042531</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/f4df0bd6-0a4c-4758-ae98-510a339340e8/resourcegroups/todoweb/providers/microsoft.insights/components/todowebServer20190707042531</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview7.19365.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview7.19365.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
@@ -23,5 +26,9 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>
