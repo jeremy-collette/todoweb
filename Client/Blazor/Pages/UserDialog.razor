@@ -4,8 +4,8 @@
 
 @if (loggedInUser == null)
 {
-    <b>@(isRegistering ? "Register" : "Login")</b>
-    <p><a @onclick="@ToggleRegister">Or click here to @(isRegistering ? "login" : "register").</a></p>
+    <b>@formMode</b>
+    <p><a @onclick="@ToggleRegister">Or click here to @GetOppositeMode().ToLower().</a></p>
     <EditForm Model="@formUser" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -15,7 +15,7 @@
         {
             <label>Confirm password:</label><input type="password" @bind="@confirmPassword" /><br />
         }
-        <button type="submit">@(isRegistering ? "Register" : "Submit")</button>
+        <button type="submit">@formMode</button>
     </EditForm>
 }
 else
@@ -67,7 +67,7 @@ else
         }
         catch
         {
-            jsRuntime.ShowAlert($"{(isRegistering ? "Registration" : "Login")} failed!");
+            jsRuntime.ShowAlert($"{formMode} failed!");
         }
         this.OnLogin.Invoke();
         this.StateHasChanged();
@@ -88,9 +88,16 @@ else
         this.StateHasChanged();
     }
 
+    private string GetOppositeMode()
+    {
+        return formMode == "Login" ? "Register" : "Login";
+    }
+
     bool isRegistering = false;
+    string formMode = "Login";
     private void ToggleRegister()
     {
         isRegistering = !isRegistering;
+        formMode = GetOppositeMode();
     }
 }
