@@ -1,42 +1,43 @@
 ﻿@using todoweb.Client.Models
 @inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
 
-    <div>
-        <p><b>@Title</b></p>
-        @if (this.Todos.Count == 0)
+<div>
+    <p><b>@Title</b></p>
+    @if (this.Todos.Count == 0)
+    {
+        <div style="padding-left:20px">
+            <p><i>There are currently no TODOs.</i></p>
+        </div>
+    }
+    <ul>
+        @foreach (var todo in Todos)
         {
-            <div style="padding-left:20px">
-                <p><i>There are currently no TODOs.</i></p>
-            </div>
-        }
-        <ul>
-            @foreach (var todo in Todos)
+            if (IsBeingEdited(todo))
             {
-                if (IsBeingEdited(todo))
-                {
-                    <li>
-                        <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
-                            <InputText id="title" @bind-Value="@todo.Title" />
-                            <label>Completed:</label><InputCheckbox Id="done" @bind-Value="@todo.Done" />
-                            <button @onclick="@(() => HandleEditToggle(todo))">Cancel</button>
-                            <button type="submit">Save</button>
-                        </EditForm>
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        @todo.Title
-                        <button @onclick="@(() => HandleEditToggle(todo))">Edit</button>
-                        <button @onclick="@(() => HandleDelete(todo))">Delete</button>
-                    </li>
-                }
-
+                <li>
+                    <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <InputText id="title" @bind-Value="@todo.Title" />
+                        <label>Completed:</label><InputCheckbox Id="done" @bind-Value="@todo.Done" />
+                        <button @onclick="@(() => HandleEditToggle(todo))">Cancel</button>
+                        <button type="submit">Save</button>
+                    </EditForm>
+                </li>
             }
-        </ul>
-    </div>
+            else
+            {
+                <li>
+                    @todo.Title
+                    <button @onclick="@(() => HandleEditToggle(todo))">Edit</button>
+                    <button @onclick="@(() => HandleDelete(todo))">Delete</button>
+                </li>
+            }
+
+        }
+    </ul>
+</div>
 
 @functions {
     [Parameter]
@@ -60,7 +61,15 @@
 
     private async void HandleDelete(Todo todo)
     {
-        await GetTodoClient().DeleteAsync(todo.Id);
+        try
+        {
+            await GetTodoClient().DeleteAsync(todo.Id);
+        }
+        catch
+        {
+            jsRuntime.ShowAlert("Error deleting TODO!");
+        }
+
         this.Todos.Remove(todo);
         this.StateHasChanged();
     }
@@ -73,7 +82,15 @@
 
     private async void HandleEdit(Todo todo)
     {
-        await GetTodoClient().CreateOrUpdateAsync(todo.Id, todo);
+        try
+        {
+            await GetTodoClient().CreateOrUpdateAsync(todo.Id, todo);
+        }
+        catch
+        {
+            jsRuntime.ShowAlert("Error creating / updating TODO!");
+        }
+
         this.HandleEditToggle(todo);
         this.OnEdit.Invoke();
     }
