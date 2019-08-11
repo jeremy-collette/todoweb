@@ -1,12 +1,9 @@
-﻿@page "/login"
-@using todoweb.Client.Models
+﻿@using todoweb.Client.Models
 @inject HttpClient httpClient
-
-<h1>todoweb</h1>
 
 @if (loggedInUser == null)
 {
-    <b>Login:</b><br/>
+    <b>Login</b><br/>
     <EditForm Model="@formUser" OnValidSubmit="@HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -18,11 +15,16 @@
 }
 else
 {
-    <p>Hello, @loggedInUser.Email!</p>
-    <button @onclick="@HandleLogout">Logout</button>
+    <p>Hello, @loggedInUser.Email! <button @onclick="@HandleLogout">Logout</button></p>
 }
 
 @code {
+    [Parameter]
+    private Action OnLogin { get; set; }
+
+    [Parameter]
+    private Action OnLogout { get; set; }
+
     private IUserClient GetUserClient()
     {
         return ClientFactory.CreateUserClient(httpClient);
@@ -57,6 +59,7 @@ else
         {
             // Do nothing
         }
+        this.OnLogin.Invoke();
         this.StateHasChanged();
     }
 
@@ -71,6 +74,7 @@ else
         {
             // Do nothing
         }
+        this.OnLogout.Invoke();
         this.StateHasChanged();
     }
 }
