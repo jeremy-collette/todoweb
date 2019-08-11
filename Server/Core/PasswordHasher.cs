@@ -1,5 +1,4 @@
-﻿
-namespace todoweb.Server.Core
+﻿namespace todoweb.Server.Core
 {
     using System;
     using System.Linq;
@@ -9,6 +8,11 @@ namespace todoweb.Server.Core
 
     public class PasswordHasher : IPasswordHasher
     {
+        private static int SaltBytes = 16;
+        private static int HashBytes = 20;
+        private static int SaltHashLength = SaltBytes + HashBytes;
+        private static int HashIterations = 1000;
+
         private RNGCryptoServiceProvider rngCryptoServiceProvider_;
 
         public PasswordHasher()
@@ -18,27 +22,27 @@ namespace todoweb.Server.Core
 
         public byte[] GetHash(string password)
         {
-            var salt = new byte[16];
+            var salt = new byte[PasswordHasher.SaltBytes];
             this.rngCryptoServiceProvider_.GetBytes(salt);
 
-            var hashGenerator = new Rfc2898DeriveBytes(password, salt, 10000);
-            byte[] passwordHash = hashGenerator.GetBytes(20);
+            var hashGenerator = new Rfc2898DeriveBytes(password, salt, PasswordHasher.HashIterations);
+            var passwordHash = hashGenerator.GetBytes(PasswordHasher.HashBytes);
 
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(passwordHash, 0, hashBytes, 16, 20);
+            var hashBytes = new byte[SaltHashLength];
+            Array.Copy(salt, 0, hashBytes, 0, SaltBytes);
+            Array.Copy(passwordHash, 0, hashBytes, SaltBytes, HashBytes);
             return hashBytes;
         }
 
         public bool Verify(string password, byte[] hash)
         {
-            byte[] salt = new byte[16];
-            Array.Copy(hash, 0, salt, 0, 16);
+            var salt = new byte[PasswordHasher.SaltBytes];
+            Array.Copy(hash, 0, salt, 0, PasswordHasher.SaltBytes);
 
-            var hashGenerator = new Rfc2898DeriveBytes(password, salt, 10000);
-            var passwordHash = hashGenerator.GetBytes(20);
+            var hashGenerator = new Rfc2898DeriveBytes(password, salt, PasswordHasher.HashIterations);
+            var passwordHash = hashGenerator.GetBytes(PasswordHasher.HashBytes);
 
-            return hash.Skip(16).SequenceEqual(passwordHash);
+            return hash.Skip(PasswordHasher.SaltBytes).SequenceEqual(passwordHash);
         }
     }
 }

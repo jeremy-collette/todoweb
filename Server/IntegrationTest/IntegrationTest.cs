@@ -33,8 +33,8 @@ namespace todoweb.Server.IntegrationTest
         public async void TodoLifecycle()
         {
             var httpClient = this.factory_.CreateClient();
-
             var client = new ResourceClient<Client.Todo>(ClientFactory.CreateTodoClient(httpClient));
+
             await ResourceLifecycleIntegrationTest.TestResource(
                 client,
                 createFactory: () => new Client.Todo
