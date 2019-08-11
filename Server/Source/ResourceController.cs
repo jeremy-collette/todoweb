@@ -117,7 +117,7 @@
             var resources = resourceManager_.GetAll().ToList();
             var authorizedResources = resources.Where(resource => this.authorizationPolicy_.CanRead(user, resource)).ToList();
 
-            return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(resources));
+            return Ok(this.ModelMapper.Map<IEnumerable<TClientResource>>(authorizedResources));
         }
 
         // GET resource/5
