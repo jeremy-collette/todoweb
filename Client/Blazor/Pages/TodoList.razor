@@ -16,13 +16,14 @@
             if (IsBeingEdited(todo))
             {
                 <li>
-                    <EditForm Model="@todo" OnValidSubmit="@(() => HandleEdit(todo))">
+                    <EditForm Model="@todo">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
                         <InputText id="title" @bind-Value="@todo.Title" />
                         <label>Completed:</label><InputCheckbox Id="done" @bind-Value="@todo.Done" />
                         <button @onclick="@(() => HandleEditToggle(todo))">Cancel</button>
-                        <button type="submit">Save</button>
+                        <button @onclick="@(() => HandleDelete(todo))">Delete</button>
+                        <button @onclick="@(() => HandleEdit(todo))" type="submit">Save</button>
                     </EditForm>
                 </li>
             }
@@ -31,7 +32,10 @@
                 <li>
                     @todo.Title
                     <button @onclick="@(() => HandleEditToggle(todo))">Edit</button>
-                    <button @onclick="@(() => HandleDelete(todo))">Delete</button>
+                    @if (EnableComplete)
+                    {
+                        <button @onclick="@(() => HandleCompletion(todo))">Complete</button>
+                    }
                 </li>
             }
 
@@ -48,6 +52,9 @@
 
     [Parameter]
     private Action OnEdit { get; set; }
+
+    [Parameter]
+    private bool EnableComplete { get; set; }
 
     private ITodoClient GetTodoClient()
     {
@@ -88,9 +95,8 @@
         }
         catch
         {
-            jsRuntime.ShowAlert("Error creating / updating TODO!");
+            jsRuntime.ShowAlert("Error updating TODO!");
         }
-
         this.HandleEditToggle(todo);
         this.OnEdit.Invoke();
     }
@@ -106,5 +112,19 @@
             beingEdited.Add(todo.Id);
         }
         this.StateHasChanged();
+    }
+
+    private async void HandleCompletion(Todo todo)
+    {
+        try
+        {
+            await GetTodoClient().CompleteAsync(todo.Id);
+        }
+        catch
+        {
+            jsRuntime.ShowAlert("Error completing TODO!");
+        }
+        this.StateHasChanged();
+        this.OnEdit.Invoke();
     }
 }

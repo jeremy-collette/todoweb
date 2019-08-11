@@ -2,6 +2,7 @@
 @using todoweb.Client
 @using todoweb.Client.Models
 @inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
 
 <h1>todoweb</h1>
 
@@ -15,7 +16,7 @@ else
 
     if (loggedInUser != null)
     {
-        <TodoList Title="Your current TODOs are:" Todos="@allTodos.Where(t => !t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" />
+        <TodoList Title="Your current TODOs are:" Todos="@allTodos.Where(t => !t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" EnableComplete="@true" />
         <br />
         <br />
         <b>Create new TODO:</b>
@@ -27,7 +28,7 @@ else
         </EditForm>
         <br />
         <br />
-        <TodoList Title="Previously completed TODOs:" Todos="@allTodos.Where(t => t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" />
+        <TodoList Title="Previously completed TODOs:" Todos="@allTodos.Where(t => t.Done).ToList()" OnEdit="@(() => HandleEditTodo())"  EnableComplete="@false" />
     }
 }
 
@@ -64,7 +65,7 @@ else
         }
         catch
         {
-            // Do nothing
+            jsRuntime.ShowAlert("Error getting TODOs!");
         }
     }
 
@@ -92,9 +93,9 @@ else
         this.StateHasChanged();
     }
 
-    private void HandleEditTodo()
+    private async void HandleEditTodo()
     {
-        this.StateHasChanged();
+        await this.OnInitAsync();
     }
 
     private async void HandleLogin()
