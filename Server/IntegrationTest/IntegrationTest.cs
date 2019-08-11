@@ -29,6 +29,7 @@ namespace todoweb.Server.IntegrationTest
             });
         }
 
+        // TODO(@jeremy): Add framework for testing resources between after update and before delete.
         [Fact]
         public async void TodoLifecycle()
         {
