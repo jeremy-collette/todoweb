@@ -9,6 +9,7 @@
     using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
     using todoweb.Server.Core;
+    using System.Text;
 
     public class ResourceStoreTests
     {
@@ -41,19 +42,17 @@
                 .UseInMemoryDatabase(databaseName: "testdb");
 
             var resourceStore = new DatabaseResourceManager<User>(new DatabaseContext<User>(contextOptionsBuilder.Options));
+
             var newUser = resourceStore.Add(
                 new User
                 {
                     Id = Guid.NewGuid(),
                     Owner = Guid.NewGuid(),
                     Email = "foo@bar.com",
-                    Password = "test"
-
+                    PasswordHash = Encoding.UTF8.GetBytes("foobar")
                 });
             resourceStore.Get(newUser.Id).Should().BeEquivalentTo(newUser);
-
             resourceStore.Delete(newUser.Id).Should().BeTrue();
-
             resourceStore.Get(newUser.Id).Should().BeNull();
         }
     }

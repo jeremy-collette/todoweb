@@ -1,11 +1,13 @@
 ﻿namespace todoweb.Server
 {
     using System.Linq;
-
+    using System.Text;
+    using AutoMapper.Configuration;
     using Microsoft.AspNetCore.Mvc;
 
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
 
     using Client = Client.Models;
     using Server = Models;
@@ -16,12 +18,25 @@
     {
         private IResourceManager<Server.User> userManager_;
         private IHttpSessionManager httpSessionManager_;
+        private IPasswordHasher passwordHasher_;
 
-        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy)
-            : base(userManager, httpSessionManager, authorizationPolicy)
+        // TODO(@jeremy): Should we inject this?
+        private static MapperConfigurationExpression GetMapperConfigurationExpression(IPasswordHasher passwordHasher)
+        {
+            var mapperConfigurationExpression = new MapperConfigurationExpression();
+            mapperConfigurationExpression.CreateMap<Client.User, Server.User>()
+                .ForMember(dest => dest.PasswordHash, opts => opts.MapFrom(
+                    src => passwordHasher.GetHash(src.Password)));
+            mapperConfigurationExpression.CreateMap<Server.User, Client.User>();
+            return mapperConfigurationExpression;
+        }
+
+        public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy, IPasswordHasher passwordHasher)
+            : base(userManager, httpSessionManager, authorizationPolicy, UserController.GetMapperConfigurationExpression(passwordHasher))
         {
             this.userManager_ = userManager;
             this.httpSessionManager_ = httpSessionManager;
+            this.passwordHasher_ = passwordHasher;
         }
 
         [Route("login")]
@@ -42,7 +57,7 @@
         public ActionResult<Client.User> Login([FromBody] Client.User user)
         {
             var serverUser = userManager_.GetAll()
-                .FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+                .FirstOrDefault(u => u.Email == user.Email && this.passwordHasher_.Verify(user.Password, u.PasswordHash));
             if (serverUser == null)
             {
                 return NotFound();

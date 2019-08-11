@@ -24,7 +24,7 @@
                 Password = "test1234"
             };
             this.createdUser_ = await this.userClient_.CreateAsync(newUser);
-            return (await this.userClient_.LoginAsync(this.createdUser_)) != null;
+            return (await this.userClient_.LoginAsync(newUser)) != null;
         }
 
         public async Task<bool> Unauthenticate()

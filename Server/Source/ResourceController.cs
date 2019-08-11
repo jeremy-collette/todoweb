@@ -5,6 +5,7 @@
     using System.Linq;
 
     using AutoMapper;
+    using AutoMapper.Configuration;
     using Microsoft.AspNetCore.Mvc;
 
     using todoweb.Client.Models.Contract;
@@ -24,18 +25,27 @@
 
         protected IMapper ModelMapper { get; set; }
 
+        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy, MapperConfigurationExpression modelMapperConfigurationExpression)
+        {
+            this.resourceManager_ = resourceManager;
+            this.httpSessionManager_ = httpSessionManager;
+            this.authorizationPolicy_ = authorizationPolicy;
+
+            var config = new MapperConfiguration(modelMapperConfigurationExpression);
+            this.ModelMapper = config.CreateMapper();
+        }
+
         public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy)
         {
             this.resourceManager_ = resourceManager;
             this.httpSessionManager_ = httpSessionManager;
             this.authorizationPolicy_ = authorizationPolicy;
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<TClientResource, TServerResource>();
-                cfg.CreateMap<TServerResource, TClientResource>();
-            });
+            var modelMapperConfigurationExpression = new MapperConfigurationExpression();
+            modelMapperConfigurationExpression.CreateMap<TClientResource, TServerResource>();
+            modelMapperConfigurationExpression.CreateMap<TServerResource, TClientResource>();
 
+            var config = new MapperConfiguration(modelMapperConfigurationExpression);
             this.ModelMapper = config.CreateMapper();
         }
 

@@ -42,6 +42,7 @@ namespace todoweb.Server
             services.AddScoped<IAuthorizationPolicy<User>, UserAuthorizationPolicy>();
             services.AddScoped<IAuthorizationPolicy<Todo>, TodoAuthorizationPolicy>();
             services.AddScoped<IHttpSessionManager, HttpSessionManager>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddSwaggerDocument();
 
             services.AddDbContext<DatabaseContext<Todo>>(o => o.UseSqlServer(this.Configuration.GetConnectionString("TodoDatabase")));

@@ -3,7 +3,6 @@ namespace todoweb.Server.IntegrationTest
     using System.IO;
 
     using Microsoft.AspNetCore.Mvc.Testing;
-    using Microsoft.Extensions.Configuration.Json;
     using Xunit;
 
     using todoweb.Client;
