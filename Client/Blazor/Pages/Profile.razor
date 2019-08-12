@@ -1,0 +1,52 @@
+﻿@page "/profile"
+@using todoweb.Client
+@using todoweb.Client.Models
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+
+<h1>Profile</h1>
+
+@if (loaded == false)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>Hello, @loggedInUser?.Email!</p>
+    <UserEditor FormUser="@(loggedInUser ?? new User())" OnSubmit="@this.HandleLoginLogout"/>
+}
+
+@code
+{
+    private IUserClient GetUserClient()
+    {
+        return ClientFactory.CreateUserClient(httpClient);
+    }
+
+    User loggedInUser;
+    private async Task FetchLoggedInUser()
+    {
+        try
+        {
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
+    bool loaded = false;
+    protected override async Task OnInitAsync()
+    {
+        await FetchLoggedInUser();
+
+        loaded = true;
+        this.StateHasChanged();
+    }
+
+    private async void HandleLoginLogout()
+    {
+        await this.OnInitAsync();
+    }
+}

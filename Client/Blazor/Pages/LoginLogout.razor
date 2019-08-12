@@ -4,18 +4,13 @@
 
 @if (loggedInUser == null)
 {
-    <b>@formMode</b>
-    <p><a @onclick="@ToggleRegister">Or click here to @GetOppositeMode().ToLower().</a></p>
+    <b>Login</b>
     <EditForm Model="@formUser" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <label>Email:</label><InputText id="email" @bind-Value="@formUser.Email" /><br />
         <label>Password:</label><input type="password" @bind="@formUser.Password" /><br />
-        @if (isRegistering)
-        {
-            <label>Confirm password:</label><input type="password" @bind="@confirmPassword" /><br />
-        }
-        <button type="submit">@formMode</button>
+        <button type="submit">Login</button>
     </EditForm>
 }
 else
@@ -25,10 +20,11 @@ else
 
 @code {
     [Parameter]
-    private Action OnLogin { get; set; }
+    private Action OnLogin { get; set; } = () => { };
 
     [Parameter]
-    private Action OnLogout { get; set; }
+    private Action OnLogout { get; set; } = () => { };
+
 
     private IUserClient GetUserClient()
     {
@@ -49,25 +45,15 @@ else
     }
 
     User formUser = new User();
-    string confirmPassword;
     private async void HandleSubmit()
     {
         try
         {
-            if (isRegistering)
-            {
-                if (formUser.Password != confirmPassword)
-                {
-                    jsRuntime.ShowAlert("Passwords do not match!");
-                    return;
-                }
-                await GetUserClient().CreateAsync(formUser);
-            }
             loggedInUser = await GetUserClient().LoginAsync(formUser);
         }
         catch
         {
-            jsRuntime.ShowAlert($"{formMode} failed!");
+            jsRuntime.ShowAlert($"Login failed!");
         }
         this.OnLogin.Invoke();
         this.StateHasChanged();
@@ -86,18 +72,5 @@ else
         }
         this.OnLogout.Invoke();
         this.StateHasChanged();
-    }
-
-    private string GetOppositeMode()
-    {
-        return formMode == "Login" ? "Register" : "Login";
-    }
-
-    bool isRegistering = false;
-    string formMode = "Login";
-    private void ToggleRegister()
-    {
-        isRegistering = !isRegistering;
-        formMode = GetOppositeMode();
     }
 }
