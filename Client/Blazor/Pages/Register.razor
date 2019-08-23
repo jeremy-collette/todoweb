@@ -1,10 +1,10 @@
-﻿@page "/profile"
+﻿@page "/register"
 @using todoweb.Client
 @using todoweb.Client.Models
 @inject HttpClient httpClient
 @inject IJSRuntime jsRuntime
 
-<h1>Profile</h1>
+<h1>Register</h1>
 
 @if (loaded == false)
 {
@@ -12,14 +12,13 @@
 }
 else
 {
-    if (loggedInUser == null)
+    if (loggedInUser != null)
     {
-        <p>Please <a href="/">login</a> or <a href="/register">register</a>.</p>
+        <p>Please logout before registering a new account.</p>
     }
     else
     {
-        <p>Hello, @loggedInUser.Email!</p>
-        <UserEditor FormUser="@loggedInUser" OnSubmit="@this.HandleLoginLogout"/>
+        <UserEditor FormUser="@(new User())" OnSubmit="@this.HandleLoginLogout" />
     }
 }
 
