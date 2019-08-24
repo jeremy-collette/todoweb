@@ -14,7 +14,11 @@
                 return false;
             }
 
-            return model.Id == model.Email && model.Email == model.Owner;
+            if (model.Id != model.Email || model.Email != model.Owner)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

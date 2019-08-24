@@ -19,7 +19,7 @@
         private IAuthorizationPolicy<Server.Todo> authorizationPolicy_;
 
         public TodoController(IResourceManager<Server.Todo> todoManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
-            : base(todoManager, httpSessionManager, authorizationPolicy, keyGenerator: t => new Guid().ToString(), modelValidator: new TodoValidator())
+            : base(todoManager, httpSessionManager, authorizationPolicy, keyGenerator: t => Guid.NewGuid().ToString(), modelValidator: new TodoValidator())
         {
             this.todoManager_ = todoManager;
             this.httpSessionManager_ = httpSessionManager;
