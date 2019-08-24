@@ -1,0 +1,59 @@
+﻿@page "/register"
+@using todoweb.Client
+@using todoweb.Client.Models
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+@inject IUriHelper uriHelper
+
+<h1>Register</h1>
+
+@if (loaded == false)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (loggedInUser != null)
+    {
+        <p>Please logout before registering a new account.</p>
+    }
+    else
+    {
+        <UserEditor FormUser="@(new User())" NewUser="true" OnSubmit="@this.HandleLoginLogout" />
+    }
+}
+
+@code
+{
+    private IUserClient GetUserClient()
+    {
+        return ClientFactory.CreateUserClient(httpClient);
+    }
+
+    User loggedInUser;
+    private async Task FetchLoggedInUser()
+    {
+        try
+        {
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
+    bool loaded = false;
+    protected override async Task OnInitAsync()
+    {
+        await FetchLoggedInUser();
+
+        loaded = true;
+        this.StateHasChanged();
+    }
+
+    private void HandleLoginLogout()
+    {
+        uriHelper.NavigateTo("/");
+    }
+}

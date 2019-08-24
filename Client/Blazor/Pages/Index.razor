@@ -1,0 +1,111 @@
+﻿@page "/"
+@using todoweb.Client
+@using todoweb.Client.Models
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+
+<h1>todoweb</h1>
+
+@if (loaded == false)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <LoginLogout OnLogin="@this.HandleLogin" OnLogout="@this.HandleLogout" />
+
+    if (loggedInUser != null)
+    {
+        <TodoList Title="Your current TODOs are:" Todos="@allTodos.Where(t => !t.Done).ToList()" OnEdit="@(() => HandleEditTodo())" EnableComplete="@true" />
+        <br />
+        <br />
+        <b>Create new TODO:</b>
+        <EditForm Model="@newTodo" OnValidSubmit="@HandleNewTodo">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <InputText id="title" @bind-Value="@newTodo.Title" />
+            <button type="submit">Submit</button>
+        </EditForm>
+        <br />
+        <br />
+        <TodoList Title="Previously completed TODOs:" Todos="@allTodos.Where(t => t.Done).ToList()" OnEdit="@(() => HandleEditTodo())"  EnableComplete="@false" />
+    }
+}
+
+@functions {
+    private ITodoClient GetTodoClient()
+    {
+        return ClientFactory.CreateTodoClient(httpClient);
+    }
+
+    private IUserClient GetUserClient()
+    {
+        return ClientFactory.CreateUserClient(httpClient);
+    }
+
+    User loggedInUser;
+    private async Task FetchLoggedInUser()
+    {
+        try
+        {
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
+    ICollection<Todo> allTodos;
+    private async Task FetchTodos()
+    {
+        try
+        {
+            allTodos = await GetTodoClient().GetAllAsync();
+        }
+        catch
+        {
+            jsRuntime.ShowAlert("Error getting TODOs!");
+        }
+    }
+
+    bool loaded = false;
+    protected override async Task OnInitAsync()
+    {
+        await FetchLoggedInUser();
+
+        if (loggedInUser != null)
+        {
+            await FetchTodos();
+        }
+
+        loaded = true;
+        this.StateHasChanged();
+    }
+
+    Todo newTodo = new Todo();
+    private async void HandleNewTodo()
+    {
+        await GetTodoClient().CreateAsync(newTodo);
+        newTodo = new Todo();
+
+        await FetchTodos();
+        this.StateHasChanged();
+    }
+
+    private async void HandleEditTodo()
+    {
+        await this.OnInitAsync();
+    }
+
+    private async void HandleLogin()
+    {
+        await this.OnInitAsync();
+    }
+
+    private async void HandleLogout()
+    {
+        loggedInUser = null;
+        await this.OnInitAsync();
+    }
+}

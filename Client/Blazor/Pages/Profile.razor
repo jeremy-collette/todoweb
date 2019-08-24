@@ -1,0 +1,68 @@
+﻿@page "/profile"
+@using todoweb.Client
+@using todoweb.Client.Models
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+@inject IUriHelper uriHelper
+
+<h1>Profile</h1>
+
+@if (loaded == false)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (loggedInUser == null)
+    {
+        <p>Please <a href="/">login</a> or <a href="/register">register</a>.</p>
+    }
+    else
+    {
+        <p>Hello, @loggedInUser.Email!</p>
+        <UserEditor FormUser="@loggedInUser" OnSubmit="@this.HandleLoginLogout" /><br />
+        <b>Delete Account</b><br />
+        <button @onclick="@this.HandleDelete">Delete</button>
+    }
+}
+
+@code
+{
+    private IUserClient GetUserClient()
+    {
+        return ClientFactory.CreateUserClient(httpClient);
+    }
+
+    User loggedInUser;
+    private async Task FetchLoggedInUser()
+    {
+        try
+        {
+            loggedInUser = await GetUserClient().GetCurrentAsync();
+        }
+        catch
+        {
+            // Do nothing
+        }
+    }
+
+    bool loaded = false;
+    protected override async Task OnInitAsync()
+    {
+        await FetchLoggedInUser();
+
+        loaded = true;
+        this.StateHasChanged();
+    }
+
+    private async void HandleLoginLogout()
+    {
+        await this.OnInitAsync();
+    }
+
+    private async void HandleDelete()
+    {
+        await this.GetUserClient().DeleteAsync(loggedInUser.Id);
+        uriHelper.NavigateTo("/");
+    }
+}

@@ -1,0 +1,83 @@
+﻿@using todoweb.Client.Models
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+
+<b>Edit User</b>
+<EditForm Model="@this.FormUser" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    @if (this.NewUser)
+    {
+        <label>Email:</label><input type="text" id="email" @bind="@this.FormUser.Email" /><br />
+    }
+    else
+    {
+        <label>Email:</label><input type="text" id="email" @bind="@this.FormUser.Email" disabled /><br />
+    }
+    <label>Password:</label><input type="password" @bind="@this.FormUser.Password" /><br />
+    <label>Confirm password:</label><input type="password" @bind="@confirmPassword" /><br />
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    private Action OnSubmit { get; set; }
+
+    [Parameter]
+    private User FormUser { get; set; } = new User();
+
+    [Parameter]
+    private bool NewUser { get; set; } = false;
+
+    private IUserClient GetUserClient()
+    {
+        return ClientFactory.CreateUserClient(httpClient);
+    }
+
+    string confirmPassword;
+    private async void HandleSubmit()
+    {
+
+        if (this.FormUser.Password != confirmPassword)
+        {
+            jsRuntime.ShowAlert("Passwords do not match!");
+            return;
+        }
+
+        if (this.FormUser.Id == null)
+        {
+            try
+            {
+                await GetUserClient().CreateAsync(this.FormUser);
+            }
+            catch
+            {
+                jsRuntime.ShowAlert($"User creation failed. Try using a different username.");
+                return;
+            }
+        }
+        else
+        {
+            try
+            {
+                await GetUserClient().CreateOrUpdateAsync(this.FormUser.Id, this.FormUser);
+            }
+            catch
+            {
+                jsRuntime.ShowAlert($"User update failed!");
+                return;
+            }
+
+        }
+        await GetUserClient().LoginAsync(this.FormUser);
+
+        this.OnSubmit.Invoke();
+        this.StateHasChanged();
+    }
+
+    protected override Task OnInitAsync()
+    {
+        this.StateHasChanged();
+        return Task.CompletedTask;
+    }
+}
