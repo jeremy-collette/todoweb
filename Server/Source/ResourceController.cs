@@ -22,24 +22,30 @@
         private IResourceManager<TServerResource> resourceManager_;
         private IHttpSessionManager httpSessionManager_;
         private IAuthorizationPolicy<TServerResource> authorizationPolicy_;
+        private Func<TClientResource, string> keyGenerator_;
+        private IModelValidator<TServerResource> modelValidator_;
 
         protected IMapper ModelMapper { get; set; }
 
-        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy, MapperConfigurationExpression modelMapperConfigurationExpression)
+        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy, Func<TClientResource, string> keyGenerator, IModelValidator<TServerResource> modelValidator, MapperConfigurationExpression modelMapperConfigurationExpression)
         {
             this.resourceManager_ = resourceManager;
             this.httpSessionManager_ = httpSessionManager;
             this.authorizationPolicy_ = authorizationPolicy;
+            this.keyGenerator_ = keyGenerator;
+            this.modelValidator_ = modelValidator;
 
             var config = new MapperConfiguration(modelMapperConfigurationExpression);
             this.ModelMapper = config.CreateMapper();
         }
 
-        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy)
+        public ResourceController(IResourceManager<TServerResource> resourceManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<TServerResource> authorizationPolicy, Func<TClientResource, string> keyGenerator, IModelValidator<TServerResource> modelValidator)
         {
             this.resourceManager_ = resourceManager;
             this.httpSessionManager_ = httpSessionManager;
             this.authorizationPolicy_ = authorizationPolicy;
+            this.keyGenerator_ = keyGenerator;
+            this.modelValidator_ = modelValidator;
 
             var modelMapperConfigurationExpression = new MapperConfigurationExpression();
             modelMapperConfigurationExpression.CreateMap<TClientResource, TServerResource>();
@@ -47,18 +53,19 @@
 
             var config = new MapperConfiguration(modelMapperConfigurationExpression);
             this.ModelMapper = config.CreateMapper();
+
         }
 
         // POST resource/
         [HttpPost]
         public ActionResult<TClientResource> Create([FromBody] TClientResource resource)
         {
-            return this.CreateOrUpdate(Guid.NewGuid(), resource);
+            return this.CreateOrUpdate(this.keyGenerator_(resource), resource);
         }
 
         // PUT resource/5
         [HttpPut("{id}")]
-        public ActionResult<TClientResource> CreateOrUpdate(Guid id, [FromBody] TClientResource resource)
+        public ActionResult<TClientResource> CreateOrUpdate(string id, [FromBody] TClientResource resource)
         {
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             var serverResource = this.resourceManager_.Get(id);
@@ -86,12 +93,17 @@
                 serverResource.Owner = user != null ? user.Id : serverResource.Id;
             }
 
+            if (!this.modelValidator_.Validate(serverResource))
+            {
+                return BadRequest("Invalid model");
+            }
+
             return Ok(this.ModelMapper.Map<TClientResource>(resourceManager_.AddOrUpdate(serverResource)));
         }
 
         // DELETE resource/5
         [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(Guid id)
+        public ActionResult<bool> Delete(string id)
         {
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
 
@@ -122,7 +134,7 @@
 
         // GET resource/5
         [HttpGet("{id}")]
-        public ActionResult<TClientResource> Get(Guid id)
+        public ActionResult<TClientResource> Get(string id)
         {
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
 

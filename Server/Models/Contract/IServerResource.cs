@@ -4,8 +4,8 @@
 
     public interface IServerResource
     {
-        Guid Id { get; set; }
+        string Id { get; set; }
 
-        Guid Owner { get; set; }
+        string Owner { get; set; }
     }
 }

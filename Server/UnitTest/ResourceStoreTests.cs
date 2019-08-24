@@ -23,8 +23,8 @@
             var newTodo = resourceStore.Add(
                 new Todo
                 {
-                    Id = Guid.NewGuid(),
-                    Owner = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
+                    Owner = "foo@bar.com",
                     Title = "Test Todo",
                     Done = false
                 });
@@ -46,8 +46,8 @@
             var newUser = resourceStore.Add(
                 new User
                 {
-                    Id = Guid.NewGuid(),
-                    Owner = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
+                    Owner = "foo@bar.com",
                     Email = "foo@bar.com",
                     PasswordHash = Encoding.UTF8.GetBytes("foobar")
                 });

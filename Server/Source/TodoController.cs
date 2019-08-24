@@ -19,7 +19,7 @@
         private IAuthorizationPolicy<Server.Todo> authorizationPolicy_;
 
         public TodoController(IResourceManager<Server.Todo> todoManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.Todo> authorizationPolicy)
-            : base(todoManager, httpSessionManager, authorizationPolicy)
+            : base(todoManager, httpSessionManager, authorizationPolicy, keyGenerator: t => new Guid().ToString(), modelValidator: new TodoValidator())
         {
             this.todoManager_ = todoManager;
             this.httpSessionManager_ = httpSessionManager;
@@ -28,7 +28,7 @@
 
         [Route("complete/{id}")]
         [HttpPost]
-        public ActionResult Complete(Guid id)
+        public ActionResult Complete(string id)
         {
             var user = this.httpSessionManager_.GetUserFromRequest(Request);
             if (user == null)

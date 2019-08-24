@@ -9,8 +9,8 @@
     public class SessionManager : ISessionManager
     {
         // TODO(@jecollet): remove statics
-        static Dictionary<Guid, Guid> sessionToUserMap_ = new Dictionary<Guid, Guid>();
-        static Dictionary<Guid, Guid> userToSessionMap_ = new Dictionary<Guid, Guid>();
+        static Dictionary<Guid, string> sessionToUserMap_ = new Dictionary<Guid, string>();
+        static Dictionary<string, Guid> userToSessionMap_ = new Dictionary<string, Guid>();
         IResourceManager<User> userManager_;
 
         public SessionManager(DatabaseContext<User> databaseContext)

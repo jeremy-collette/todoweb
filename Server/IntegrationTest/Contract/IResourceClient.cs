@@ -9,14 +9,14 @@
     public interface IResourceClient<TClientResource>
         where TClientResource : IClientResource
     {
-        Task<TClientResource> GetAsync(Guid id);
+        Task<TClientResource> GetAsync(string id);
 
         Task<IEnumerable<TClientResource>> GetAllAsync();
 
         Task<TClientResource> CreateAsync(TClientResource resource);
 
-        Task<TClientResource> CreateOrUpdateAsync(Guid id, TClientResource resource);
+        Task<TClientResource> CreateOrUpdateAsync(string id, TClientResource resource);
 
-        Task<bool> DeleteAsync(Guid id);
+        Task<bool> DeleteAsync(string id);
     }
 }

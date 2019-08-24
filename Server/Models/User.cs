@@ -7,9 +7,9 @@ namespace todoweb.Server.Models
     public class User
         : IServerResource
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public Guid Owner { get; set; }
+        public string Owner { get; set; }
 
         public string Email { get; set; }
 

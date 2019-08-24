@@ -23,7 +23,7 @@ namespace todoweb.Server.Core
             return this.Add(resource);
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(string id)
         {
             var resource = this.resources_.FirstOrDefault(r => r.Id == id);
             if (resource == null)
@@ -34,7 +34,7 @@ namespace todoweb.Server.Core
             return true;
         }
 
-        public TResource Get(Guid id)
+        public TResource Get(string id)
         {
             return this.resources_.FirstOrDefault(r => r.Id == id);
         }

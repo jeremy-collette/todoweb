@@ -19,7 +19,7 @@ else
     }
     else
     {
-        <UserEditor FormUser="@(new User())" OnSubmit="@this.HandleLoginLogout" />
+        <UserEditor FormUser="@(new User())" NewUser="true" OnSubmit="@this.HandleLoginLogout" />
     }
 }
 

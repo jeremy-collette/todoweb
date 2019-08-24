@@ -34,7 +34,7 @@
             return this.Add(resource);
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(string id)
         {
             var found = this.context_.Resources.Find(id);
             if (found == null)
@@ -46,7 +46,7 @@
             return true;
         }
 
-        public TResource Get(Guid id)
+        public TResource Get(string id)
         {
             return this.context_.Resources.Find(id);
         }

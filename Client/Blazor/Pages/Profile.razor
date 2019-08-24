@@ -3,6 +3,7 @@
 @using todoweb.Client.Models
 @inject HttpClient httpClient
 @inject IJSRuntime jsRuntime
+@inject IUriHelper uriHelper
 
 <h1>Profile</h1>
 
@@ -19,7 +20,9 @@ else
     else
     {
         <p>Hello, @loggedInUser.Email!</p>
-        <UserEditor FormUser="@loggedInUser" OnSubmit="@this.HandleLoginLogout"/>
+        <UserEditor FormUser="@loggedInUser" OnSubmit="@this.HandleLoginLogout" /><br />
+        <b>Delete Account</b><br />
+        <button @onclick="@this.HandleDelete">Delete</button>
     }
 }
 
@@ -55,5 +58,11 @@ else
     private async void HandleLoginLogout()
     {
         await this.OnInitAsync();
+    }
+
+    private async void HandleDelete()
+    {
+        await this.GetUserClient().DeleteAsync(loggedInUser.Id);
+        uriHelper.NavigateTo("/");
     }
 }

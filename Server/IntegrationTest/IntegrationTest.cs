@@ -66,7 +66,7 @@ namespace todoweb.Server.IntegrationTest
                 },
                 updateFactory: (Client.User user) =>
                 {
-                    user.Email = "bar@baz.com";
+                    user.Password = "newpassword";
                     return user;
                 },
                 options: (o) => o.Excluding(u => u.Id).Excluding(u => u.Password),

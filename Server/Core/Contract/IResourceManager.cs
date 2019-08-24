@@ -6,7 +6,7 @@
 
     public interface IResourceManager<TResource> where TResource : IServerResource
     {
-        TResource Get(Guid id);
+        TResource Get(string id);
 
         IEnumerable<TResource> GetAll();
 
@@ -14,6 +14,6 @@
 
         TResource AddOrUpdate(TResource resource);
 
-        bool Delete(Guid id);
+        bool Delete(string id);
     }
 }

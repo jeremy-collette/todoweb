@@ -6,7 +6,14 @@
 <EditForm Model="@this.FormUser" OnValidSubmit="@HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <label>Email:</label><InputText id="email" @bind-Value="@this.FormUser.Email" /><br />
+    @if (this.NewUser)
+    {
+        <label>Email:</label><input type="text" id="email" @bind="@this.FormUser.Email" /><br />
+    }
+    else
+    {
+        <label>Email:</label><input type="text" id="email" @bind="@this.FormUser.Email" disabled /><br />
+    }
     <label>Password:</label><input type="password" @bind="@this.FormUser.Password" /><br />
     <label>Confirm password:</label><input type="password" @bind="@confirmPassword" /><br />
     <button type="submit">Submit</button>
@@ -19,6 +26,9 @@
     [Parameter]
     private User FormUser { get; set; } = new User();
 
+    [Parameter]
+    private bool NewUser { get; set; } = false;
+
     private IUserClient GetUserClient()
     {
         return ClientFactory.CreateUserClient(httpClient);
@@ -27,28 +37,40 @@
     string confirmPassword;
     private async void HandleSubmit()
     {
-        try
-        {
-            if (this.FormUser.Password != confirmPassword)
-            {
-                jsRuntime.ShowAlert("Passwords do not match!");
-                return;
-            }
 
-            if (this.FormUser.Id == Guid.Empty)
+        if (this.FormUser.Password != confirmPassword)
+        {
+            jsRuntime.ShowAlert("Passwords do not match!");
+            return;
+        }
+
+        if (this.FormUser.Id == null)
+        {
+            try
             {
                 await GetUserClient().CreateAsync(this.FormUser);
             }
-            else
+            catch
+            {
+                jsRuntime.ShowAlert($"User creation failed. Try using a different username.");
+                return;
+            }
+        }
+        else
+        {
+            try
             {
                 await GetUserClient().CreateOrUpdateAsync(this.FormUser.Id, this.FormUser);
             }
-            await GetUserClient().LoginAsync(this.FormUser);
+            catch
+            {
+                jsRuntime.ShowAlert($"User update failed!");
+                return;
+            }
+
         }
-        catch
-        {
-            jsRuntime.ShowAlert($"User update failed!");
-        }
+        await GetUserClient().LoginAsync(this.FormUser);
+
         this.OnSubmit.Invoke();
         this.StateHasChanged();
     }
@@ -58,5 +80,4 @@
         this.StateHasChanged();
         return Task.CompletedTask;
     }
-
 }

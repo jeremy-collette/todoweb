@@ -26,21 +26,21 @@
             return await (Task<TClientResource>)methodInfo.Invoke(this.resourceClient_, new object[] { resource });
         }
 
-        public async Task<TClientResource> CreateOrUpdateAsync(Guid id, TClientResource resource)
+        public async Task<TClientResource> CreateOrUpdateAsync(string id, TClientResource resource)
         {
-            var methodInfo = this.clientType_.GetMethod("CreateOrUpdateAsync", new Type[] { typeof(Guid), typeof(TClientResource) });
+            var methodInfo = this.clientType_.GetMethod("CreateOrUpdateAsync", new Type[] { typeof(string), typeof(TClientResource) });
             return await (Task<TClientResource>)methodInfo.Invoke(this.resourceClient_, new object[] { id, resource });
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var methodInfo = this.clientType_.GetMethod("DeleteAsync", new Type[] { typeof(Guid) });
+            var methodInfo = this.clientType_.GetMethod("DeleteAsync", new Type[] { typeof(string) });
             return await (Task<bool>)methodInfo.Invoke(this.resourceClient_, new object[] { id });
         }
 
-        public async Task<TClientResource> GetAsync(Guid id)
+        public async Task<TClientResource> GetAsync(string id)
         {
-            var methodInfo = this.clientType_.GetMethod("GetAsync", new Type[] { typeof(Guid) });
+            var methodInfo = this.clientType_.GetMethod("GetAsync", new Type[] { typeof(string) });
             return await (Task<TClientResource>)methodInfo.Invoke(this.resourceClient_, new object[] { id });
 
         }

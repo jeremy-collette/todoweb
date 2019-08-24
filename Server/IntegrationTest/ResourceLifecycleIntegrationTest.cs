@@ -10,7 +10,12 @@ namespace todoweb.Server.IntegrationTest
 {
     public static class ResourceLifecycleIntegrationTest
     {
-        public async static Task TestResource<TClientResource>(IResourceClient<TClientResource> client, Func<TClientResource> createFactory, Func<TClientResource, TClientResource> updateFactory, Func<EquivalencyAssertionOptions<TClientResource>, EquivalencyAssertionOptions<TClientResource>> options, IAuthenticator authenticator = null)
+        public async static Task TestResource<TClientResource>(
+                IResourceClient<TClientResource> client,
+                Func<TClientResource> createFactory,
+                Func<TClientResource, TClientResource> updateFactory,
+                Func<EquivalencyAssertionOptions<TClientResource>, EquivalencyAssertionOptions<TClientResource>> options,
+                IAuthenticator authenticator = null)
             where TClientResource : IClientResource
         {
             // Authenticate

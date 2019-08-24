@@ -81,7 +81,7 @@
         this.StateHasChanged();
     }
 
-    ISet<Guid> beingEdited = new HashSet<Guid>();
+    ISet<string> beingEdited = new HashSet<string>();
     private bool IsBeingEdited(Todo todo)
     {
         return beingEdited.Contains(todo.Id);

@@ -1,7 +1,6 @@
 ﻿namespace todoweb.Server
 {
     using System.Linq;
-    using System.Text;
     using AutoMapper.Configuration;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,6 @@
         private IHttpSessionManager httpSessionManager_;
         private IPasswordHasher passwordHasher_;
 
-        // TODO(@jeremy): Should we inject this?
         private static MapperConfigurationExpression GetMapperConfigurationExpression(IPasswordHasher passwordHasher)
         {
             var mapperConfigurationExpression = new MapperConfigurationExpression();
@@ -32,7 +30,7 @@
         }
 
         public UserController(IResourceManager<Server.User> userManager, IHttpSessionManager httpSessionManager, IAuthorizationPolicy<Server.User> authorizationPolicy, IPasswordHasher passwordHasher)
-            : base(userManager, httpSessionManager, authorizationPolicy, UserController.GetMapperConfigurationExpression(passwordHasher))
+            : base(userManager, httpSessionManager, authorizationPolicy, keyGenerator: u => u.Email, modelValidator: new UserValidator(), modelMapperConfigurationExpression: UserController.GetMapperConfigurationExpression(passwordHasher))
         {
             this.userManager_ = userManager;
             this.httpSessionManager_ = httpSessionManager;
