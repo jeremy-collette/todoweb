@@ -3,6 +3,7 @@
 @using todoweb.Client.Models
 @inject HttpClient httpClient
 @inject IJSRuntime jsRuntime
+@inject IUriHelper uriHelper
 
 <h1>Register</h1>
 
@@ -51,8 +52,8 @@ else
         this.StateHasChanged();
     }
 
-    private async void HandleLoginLogout()
+    private void HandleLoginLogout()
     {
-        await this.OnInitAsync();
+        uriHelper.NavigateTo("/");
     }
 }

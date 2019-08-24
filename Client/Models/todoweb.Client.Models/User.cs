@@ -1,6 +1,7 @@
 ﻿namespace todoweb.Client.Models
 {
     using System;
+
     using todoweb.Client.Models.Contract;
 
     public class User

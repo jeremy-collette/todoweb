@@ -5,6 +5,7 @@
 @if (loggedInUser == null)
 {
     <b>Login</b>
+    <p>Or click here to <a href="/register"><b>register</b></a> a new account.</p>
     <EditForm Model="@formUser" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -15,7 +16,7 @@
 }
 else
 {
-    <p>Hello, @loggedInUser.Email! <button @onclick="@HandleLogout">Logout</button></p>
+    <p>Hello, @loggedInUser.Email! <button @onclick="@HandleLogout">Logout</button> <a href="/profile"><button>Profile</button></a></p>
 }
 
 @code {

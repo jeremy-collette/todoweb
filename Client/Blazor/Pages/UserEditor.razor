@@ -7,8 +7,8 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <label>Email:</label><InputText id="email" @bind-Value="@this.FormUser.Email" /><br />
-    <label>Password:</label><input type="password" @bind="@this.FormUser.Password" @onclick="@(() => this.FormUser.Password = "")" /><br />
-    <label>Confirm password:</label><input type="password" @bind="@confirmPassword" @onclick="@(() => this.confirmPassword = "")" /><br />
+    <label>Password:</label><input type="password" @bind="@this.FormUser.Password" /><br />
+    <label>Confirm password:</label><input type="password" @bind="@confirmPassword" /><br />
     <button type="submit">Submit</button>
 </EditForm>
 
@@ -53,12 +53,10 @@
         this.StateHasChanged();
     }
 
-    protected override async Task OnInitAsync()
+    protected override Task OnInitAsync()
     {
-        this.FormUser.Password = "helloworld";
-        confirmPassword = new string(this.FormUser.Password.Reverse().ToArray());
-
         this.StateHasChanged();
+        return Task.CompletedTask;
     }
 
 }
