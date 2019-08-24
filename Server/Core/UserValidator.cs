@@ -1,6 +1,6 @@
 ﻿namespace todoweb.Server
 {
-    using todoweb.Server.Contract;
+    using todoweb.Server.Core.Contract;
 
     using Server = Server.Models;
 

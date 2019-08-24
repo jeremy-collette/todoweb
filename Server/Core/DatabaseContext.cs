@@ -1,6 +1,7 @@
 ﻿namespace todoweb.Server.Core
 {
     using Microsoft.EntityFrameworkCore;
+
     using todoweb.Server.Models;
 
     public class DatabaseContext<TResource>

@@ -1,6 +1,7 @@
 ﻿namespace todoweb.Server.UnitTest
 {
     using System;
+    using System.Text;
 
     using FluentAssertions;
     using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,6 @@
     using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
     using todoweb.Server.Core;
-    using System.Text;
 
     public class ResourceStoreTests
     {

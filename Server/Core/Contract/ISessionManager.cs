@@ -1,7 +1,8 @@
-﻿namespace todoweb.Server.Contract
+﻿namespace todoweb.Server.Core.Contract
 {
     using System;
-    using Server = Server.Models;
+
+    using Server = todoweb.Server.Models;
 
     public interface ISessionManager
     {

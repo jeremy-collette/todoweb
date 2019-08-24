@@ -1,7 +1,7 @@
-﻿namespace todoweb.Server.Core
+﻿namespace todoweb.Server.Core.Contract
 {
-    using System;
     using System.Collections.Generic;
+
     using todoweb.Server.Models;
 
     public interface IResourceManager<TResource> where TResource : IServerResource

@@ -1,10 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Http;
-using todoweb.Server.Contract;
-using todoweb.Server.Models;
-
-namespace todoweb.Server
+﻿namespace todoweb.Server
 {
+    using todoweb.Server.Core.Contract;
+    using todoweb.Server.Models;
+
     public class TodoAuthorizationPolicy : IAuthorizationPolicy<Todo>
     {
         public bool CanCreate(User creator)

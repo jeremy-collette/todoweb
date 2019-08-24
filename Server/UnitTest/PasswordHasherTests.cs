@@ -1,10 +1,11 @@
 ﻿namespace todoweb.Server.UnitTest
 {
+    using System.Collections.Generic;
+
     using FluentAssertions;
     using Xunit;
 
     using todoweb.Server.Core;
-    using System.Collections.Generic;
 
     public class PasswordHasherTests
     {

@@ -1,4 +1,4 @@
-﻿namespace todoweb.Server.Contract
+﻿namespace todoweb.Server.Core.Contract
 {
     using todoweb.Server.Models;
 

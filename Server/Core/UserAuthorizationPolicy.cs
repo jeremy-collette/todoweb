@@ -1,8 +1,6 @@
 ﻿namespace todoweb.Server
 {
-    using System;
-
-    using todoweb.Server.Contract;
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class UserAuthorizationPolicy : IAuthorizationPolicy<User>

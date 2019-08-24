@@ -6,6 +6,7 @@
 
     using todoweb.Server.Contract;
     using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class HttpSessionManager : IHttpSessionManager

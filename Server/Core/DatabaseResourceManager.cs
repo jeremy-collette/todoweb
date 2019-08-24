@@ -1,8 +1,8 @@
-﻿namespace todoweb.Server.Core.Contract
+﻿namespace todoweb.Server.Core
 {
-    using System;
     using System.Collections.Generic;
 
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class DatabaseResourceManager<TResource>

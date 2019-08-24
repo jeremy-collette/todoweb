@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using todoweb.Server.Contract;
+
     using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class SessionManager : ISessionManager
     {
-        // TODO(@jecollet): remove statics
+        // TODO(@jeremy): remove statics
         static Dictionary<Guid, string> sessionToUserMap_ = new Dictionary<Guid, string>();
         static Dictionary<string, Guid> userToSessionMap_ = new Dictionary<string, Guid>();
         IResourceManager<User> userManager_;

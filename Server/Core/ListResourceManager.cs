@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using todoweb.Server.Models;
-
-namespace todoweb.Server.Core
+﻿namespace todoweb.Server.Core
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using todoweb.Server.Core.Contract;
+    using todoweb.Server.Models;
+
     public class ListResourceManager<TResource>
         : IResourceManager<TResource>
         where TResource : IServerResource

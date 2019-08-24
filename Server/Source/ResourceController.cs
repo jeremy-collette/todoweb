@@ -10,7 +10,7 @@
 
     using todoweb.Client.Models.Contract;
     using todoweb.Server.Contract;
-    using todoweb.Server.Core;
+    using todoweb.Server.Core.Contract;
     using todoweb.Server.Models;
 
     public class ResourceController<TClientResource, TServerResource>
